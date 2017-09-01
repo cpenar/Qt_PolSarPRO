@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>main_dialog</class>
+ <widget class="QDialog" name="main_dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1117</width>
+    <height>96</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>96</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>96</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>PolSARpro</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../Images/PSPTopLeft.gif</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>61</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../Images/PSPTopCenter.gif</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QMenuBar" name="menubar">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="nativeMenuBar">
+      <bool>false</bool>
+     </property>
+     <widget class="QMenu" name="menu_Environment">
+      <property name="title">
+       <string>&amp;Environment</string>
+      </property>
+      <addaction name="single_data_set"/>
+      <addaction name="separator"/>
+      <addaction name="action_Dual_Data_Set_Single_Baseline_Pol_InSAR"/>
+     </widget>
+     <widget class="QMenu" name="menu_Import">
+      <property name="title">
+       <string>&amp;Import</string>
+      </property>
+      <widget class="QMenu" name="menu_Spaceborne_Sensors">
+       <property name="title">
+        <string>&amp;Spaceborne Sensors</string>
+       </property>
+       <widget class="QMenu" name="menuAlos_1_Palsar">
+        <property name="title">
+         <string>Alos-1-Palsar</string>
+        </property>
+        <widget class="QMenu" name="menuData_processing_Level_1_1">
+         <property name="title">
+          <string>Data processing Level 1.1</string>
+         </property>
+         <addaction name="actionDual_Pol"/>
+         <addaction name="separator"/>
+         <addaction name="actionQuad_Pol"/>
+        </widget>
+        <addaction name="menuData_processing_Level_1_1"/>
+       </widget>
+       <addaction name="menuAlos_1_Palsar"/>
+      </widget>
+      <addaction name="alos1_1_quad_jaxa_ceos"/>
+      <addaction name="action_Raw_Binary_Data"/>
+      <addaction name="separator"/>
+      <addaction name="action_Airborne_Sensors"/>
+      <addaction name="separator"/>
+      <addaction name="menu_Spaceborne_Sensors"/>
+      <addaction name="separator"/>
+      <addaction name="action_Extract_PolSAR_images"/>
+      <addaction name="separator"/>
+      <addaction name="image_viewer"/>
+     </widget>
+     <addaction name="menu_Environment"/>
+     <addaction name="menu_Import"/>
+    </widget>
+   </item>
+  </layout>
+  <action name="action_Environement">
+   <property name="text">
+    <string>&amp;Environement</string>
+   </property>
+  </action>
+  <action name="action_Environment">
+   <property name="text">
+    <string>&amp;Environment</string>
+   </property>
+  </action>
+  <action name="single_data_set">
+   <property name="text">
+    <string>&amp;Single Data Set (Pol-SAR)</string>
+   </property>
+  </action>
+  <action name="action_Dual_Data_Set_Single_Baseline_Pol_InSAR">
+   <property name="text">
+    <string>&amp;Dual Data Set (Single Baseline Pol-InSAR)</string>
+   </property>
+  </action>
+  <action name="alos1_1_quad_jaxa_ceos">
+   <property name="text">
+    <string>&amp;JAXA-CEOS Format</string>
+   </property>
+  </action>
+  <action name="action_Raw_Binary_Data">
+   <property name="text">
+    <string>&amp;Raw Binary Data</string>
+   </property>
+  </action>
+  <action name="action_Airborne_Sensors">
+   <property name="text">
+    <string>&amp;Airborne Sensors</string>
+   </property>
+  </action>
+  <action name="actionDual_Pol">
+   <property name="text">
+    <string>Dual-Pol</string>
+   </property>
+  </action>
+  <action name="actionQuad_Pol">
+   <property name="text">
+    <string>Quad-Pol</string>
+   </property>
+  </action>
+  <action name="action_Extract_PolSAR_images">
+   <property name="text">
+    <string>&amp;Extract PolSAR images</string>
+   </property>
+  </action>
+  <action name="image_viewer">
+   <property name="text">
+    <string>&amp;Image viewer</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+ <slots>
+  <slot>open_window()</slot>
+ </slots>
+</ui>
