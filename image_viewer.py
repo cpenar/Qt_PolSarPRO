@@ -16,6 +16,7 @@ default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_A
 class GUI(QtWidgets.QDialog):
     def __init__(self):
         super(GUI, self).__init__()
+        # .ui laoder
         uic.loadUi('image_viewer.ui', self)
 
         self.image = QtGui.QImage(default_image_path)
@@ -30,9 +31,18 @@ class GUI(QtWidgets.QDialog):
         self.imageView.setScene(self.scene)
 
         self.show()
+        # must be after show() method
         self.imageView.fitInView(self.scene.sceneRect(), QtCore.Qt.KeepAspectRatio)
+
+        # more stuff
+        self.verticalLayout.resizeEvent = self.onResize
+
+    def onResize(self, event):
+        print('toto')
+        print(event)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = GUI()
+    window.resizeEvent = window.onResize
     sys.exit(app.exec_())
