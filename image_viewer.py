@@ -11,6 +11,7 @@ from logging import warning
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp'
 
@@ -34,6 +35,7 @@ class GUI(QtWidgets.QDialog):
 
         # setting showed pixmap
         self.pixmap = QtGui.QPixmap.fromImage(self.image)
+        self.pixmapItem = QGraphicsPixmapItem(self.pixmap, self.scene)
 
         self.scene = QtWidgets.QGraphicsScene()
         self.scene.addPixmap(self.pixmap)
@@ -47,6 +49,15 @@ class GUI(QtWidgets.QDialog):
         # signals connection
         self.ui.fitImageButton.clicked.connect(self.fitWindow)
         self.ui.zoomLineEdit.editingFinished.connect(self.setZoomRatio)
+
+        # events connection
+        self.ui.imageView.setMouseTracking(True)
+        self.scene.mouseMoveEvent = self.imageViewMouseMove
+
+    def imageViewMouseMove(self, event):
+        x = str(int(event.lastScenePos().x()))
+        y = str(int(event.lastScenePos().y()))
+        self.ui.statusBar.setText('x:' + x + '  y:' + y)
 
     def setZoomRatio(self):
         try:
