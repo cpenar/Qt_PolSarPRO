@@ -7,7 +7,7 @@
 
 import sys 
 import os 
-from logging import warning
+from logging import critical, error, warning, info, debug
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtGui import QPixmap
@@ -24,14 +24,20 @@ class GUI(QtWidgets.QDialog):
         self.pixmap = None
         self.scene = None
         self.ui = None
+        self.currentpoly = []
+        self.polycollection = []
 
         # .ui loader
         self.ui = uic.loadUi('image_viewer.ui')
 
         # loading image
-        self.image = QtGui.QImage(default_image_path)
+        try:
+            self.image = QtGui.QImage(default_image_path)
+        except:
+            error("Couldn't load " + default_image_path)
+
         if self.image.isNull():
-            print("ERR: pas d'image chargé")
+            warning("ERR: pas d'image chargé")
 
         # setting showed pixmap
         self.pixmap = QtGui.QPixmap.fromImage(self.image)
@@ -49,7 +55,10 @@ class GUI(QtWidgets.QDialog):
 
         # signals connection
         self.ui.zoomLineEdit.editingFinished.connect(self.setZoomRatio)
+
+        # menu actions
         self.ui.actionFit_to_window.triggered.connect(self.fitWindow)
+        self.ui.actionDraw_polygon.triggered.connect(self.start_draw_polygon)
 
         # events connection
         self.ui.imageView.setMouseTracking(True)
@@ -57,6 +66,38 @@ class GUI(QtWidgets.QDialog):
 
         # must be after show() method
         self.fitWindow()
+
+    def start_draw_polygon(self):
+        print('menu add poly')
+        # 1. connect un event mouse click vers self.next_poly_coord
+        self.scene.mousePressEvent = self.nextPolyCoord
+        # 2. connect mouse motion vers self.draw_temp_segment
+
+    def nextPolyCoord(self, event):
+        print("cliecked")
+        if not event.button() in (Qt.LeftButton, Qt.RightButton): return
+
+        x, y = event.lastScenePos().x(), event.lastScenePos().y()
+
+        # Not in image ? -> nothing to do
+        if not (x in range(self.image.width()) and \
+                y in range(self.image.height())):
+            return
+
+        self.currentpoly.append((x, y))
+
+        if len(self.currentpoly) > 1:
+            self.draw_poly_segment(self.currentpoly[-1], self.currentpoly[-2])
+
+        # right button -> last segment
+        if event.button() == Qt.RightButton():
+            self.polycollection.append(self.currentpoly)
+            # draw last segment
+            self.draw_poly_segment(self.currentpoly[-1], self.currentpoly[0])
+            # reset currentpoly
+            self.currentpoly = []
+
+        # refresh canvas? view ?
 
     def modify_keyPressEvent(self):
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent
@@ -70,6 +111,7 @@ class GUI(QtWidgets.QDialog):
         pos = event.lastScenePos()
         x = int(pos.x())
         y = int(pos.y())
+        # are we inside the image ?
         if x in range(self.image.width()) and y in range(self.image.height()):
             value = self.image.pixel(x, y)
             rgb = str(QtGui.QColor(value).getRgb()[:-1])

@@ -33,7 +33,7 @@
       <property name="title">
        <string>&amp;Selection</string>
       </property>
-      <addaction name="actionPolygon_selection"/>
+      <addaction name="actionDraw_polygon"/>
       <addaction name="actionExtract_selection"/>
      </widget>
      <addaction name="menu_Image"/>
@@ -141,14 +141,14 @@
     <string>&amp;Rotate</string>
    </property>
   </action>
-  <action name="actionPolygon_selection">
-   <property name="text">
-    <string>&amp;Polygon selection</string>
-   </property>
-  </action>
   <action name="actionExtract_selection">
    <property name="text">
     <string>&amp;Extract selection</string>
+   </property>
+  </action>
+  <action name="actionDraw_polygon">
+   <property name="text">
+    <string>&amp;Draw polygon</string>
    </property>
   </action>
  </widget>
