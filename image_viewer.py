@@ -55,9 +55,14 @@ class GUI(QtWidgets.QDialog):
         self.scene.mouseMoveEvent = self.imageViewMouseMove
 
     def imageViewMouseMove(self, event):
-        x = str(int(event.lastScenePos().x()))
-        y = str(int(event.lastScenePos().y()))
-        self.ui.statusBar.setText('x:' + x + '  y:' + y)
+        pos = event.lastScenePos()
+        x = int(pos.x())
+        y = int(pos.y())
+        if x in range(self.image.width()) and y in range(self.image.height()):
+            value = self.image.pixel(x, y)
+            rgb = str(QtGui.QColor(value).getRgb()[:-1])
+            self.ui.statusBar.setText(
+                    'x:' + str(x) + '  y:' + str(y) + '  value:' + rgb)
 
     def setZoomRatio(self):
         try:
@@ -68,10 +73,6 @@ class GUI(QtWidgets.QDialog):
 
         if self.zoomRatio != newZoomRatio:
             self.zoomRatio = newZoomRatio
-            #redraw with new ratio
-            #width = int(self.pixmap.width() * self.zoomRatio / 100)
-            #height = int(self.pixmap.height() * self.zoomRatio / 100)
-            #self.scene.setSceneRect(0, 0, width, height)
             self.ui.imageView.resetTransform()
             self.ui.imageView.scale(self.zoomRatio / 100, self.zoomRatio / 100)
 
