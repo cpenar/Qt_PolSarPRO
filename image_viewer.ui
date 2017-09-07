@@ -6,164 +6,151 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>711</width>
-    <height>894</height>
+    <width>553</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <widget class="QMenuBar" name="menubar">
+     <property name="nativeMenuBar">
+      <bool>false</bool>
+     </property>
+     <widget class="QMenu" name="menu_Image">
+      <property name="title">
+       <string>&amp;Image</string>
+      </property>
+      <addaction name="actionFit_to_window"/>
+      <addaction name="separator"/>
+      <addaction name="actionHorizontal_flip"/>
+      <addaction name="actionVertical_flip"/>
+      <addaction name="actionRotate"/>
+     </widget>
+     <widget class="QMenu" name="menu_Selection">
+      <property name="title">
+       <string>&amp;Selection</string>
+      </property>
+      <addaction name="actionPolygon_selection"/>
+      <addaction name="actionExtract_selection"/>
+     </widget>
+     <addaction name="menu_Image"/>
+     <addaction name="menu_Selection"/>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QPushButton" name="pushButton_3">
-         <property name="text">
-          <string>Not implemented</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>Polygon selection</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Polygons extraction</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="fitImageButton">
-         <property name="text">
-          <string>Fit image to window</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+      <widget class="QLabel" name="zoomLabel">
+       <property name="text">
+        <string>Zoom:</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="zoomLabel">
-         <property name="text">
-          <string>Zoom:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="zoomLineEdit">
-         <property name="minimumSize">
-          <size>
-           <width>35</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>40</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="inputMethodHints">
-          <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhPreferNumbers</set>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="percentLabel">
-         <property name="text">
-          <string>%</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+      <widget class="QLineEdit" name="zoomLineEdit">
+       <property name="minimumSize">
+        <size>
+         <width>35</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly|Qt::ImhPreferNumbers</set>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QGraphicsView" name="imageView"/>
+      <widget class="QLabel" name="percentLabel">
+       <property name="text">
+        <string>%</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QLabel" name="statusBar">
-         <property name="minimumSize">
-          <size>
-           <width>300</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_4">
-         <property name="text">
-          <string>PushButton</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_5">
-         <property name="text">
-          <string>PushButton</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGraphicsView" name="imageView">
+     <property name="cursor" stdset="0">
+      <cursorShape>CrossCursor</cursorShape>
+     </property>
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="statusBar">
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
   </layout>
+  <action name="actionFit_to_window">
+   <property name="text">
+    <string>&amp;Fit to window</string>
+   </property>
+  </action>
+  <action name="actionHorizontal_flip">
+   <property name="text">
+    <string>&amp;Horizontal flip</string>
+   </property>
+  </action>
+  <action name="actionVertical_flip">
+   <property name="text">
+    <string>&amp;Vertical flip</string>
+   </property>
+  </action>
+  <action name="actionRotate">
+   <property name="text">
+    <string>&amp;Rotate</string>
+   </property>
+  </action>
+  <action name="actionPolygon_selection">
+   <property name="text">
+    <string>&amp;Polygon selection</string>
+   </property>
+  </action>
+  <action name="actionExtract_selection">
+   <property name="text">
+    <string>&amp;Extract selection</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

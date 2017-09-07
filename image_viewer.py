@@ -43,16 +43,28 @@ class GUI(QtWidgets.QDialog):
         self.ui.imageView.setScene(self.scene)
 
         self.ui.show()
-        # must be after show() method
-        self.fitWindow()
+
+        # suppress Escape key closing event for Dialog
+        self.modify_keyPressEvent()
 
         # signals connection
-        self.ui.fitImageButton.clicked.connect(self.fitWindow)
         self.ui.zoomLineEdit.editingFinished.connect(self.setZoomRatio)
+        self.ui.actionFit_to_window.triggered.connect(self.fitWindow)
 
         # events connection
         self.ui.imageView.setMouseTracking(True)
         self.scene.mouseMoveEvent = self.imageViewMouseMove
+
+        # must be after show() method
+        self.fitWindow()
+
+    def modify_keyPressEvent(self):
+        self.ui.savedKeyPressEvent = self.ui.keyPressEvent
+        self.ui.keyPressEvent = self.dontCloseWithEscapeKey
+
+    def dontCloseWithEscapeKey(self, event):
+        if event.key() != QtCore.Qt.Key_Escape:
+            self.ui.savedKeyPressEvent(event)
 
     def imageViewMouseMove(self, event):
         pos = event.lastScenePos()
