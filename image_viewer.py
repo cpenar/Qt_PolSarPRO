@@ -62,24 +62,26 @@ class Window():
 
         # events connection
         self.ui.imageView.setMouseTracking(True)
-        self.scene.mouseMoveEvent, mouseMoveRep = self.cbm.addCallback(
-                self.scene.mouseMoveEvent, self.imageViewMouseMove)
+        self.scene.mouseMoveEvent, self.mouseMoveRep = self.cbm.addCallback(
+                self.scene.mouseMoveEvent, self.mousePosToStatusBar)
 
         # must be after show() method
         self.fitWindow()
 
     def start_draw_polygon(self):
         self.scene.mousePressEvent = self.nextPolyCoord
-        self.scene.mouseMoveEvent, _ = self.cbm.addCallback(self.scene.mouseMoveEvent, self.draw_temp_segment)
+        self.scene.mouseMoveEvent, _ = self.cbm.addCallback(
+                self.scene.mouseMoveEvent, self.draw_temp_segment)
 
     def draw_temp_segment(self, event):
+        debug("Not implemented")
         pass
         
 
     def nextPolyCoord(self, event):
         # Draw the polygon segments while vertices are
         # defined with mouse clicks.
-        # store the polygon when it is closed.
+        # Store the polygon when it is closed.
         if not event.button() in (Qt.LeftButton, Qt.RightButton): return
 
         x, y = event.lastScenePos().x(), event.lastScenePos().y()
@@ -105,7 +107,7 @@ class Window():
             self.cbm.removeCallbackFromReplacer(
                     self.mouseMoveRep, self.draw_temp_segment)
             # remove mousePressEvent
-            self.scene.mousePressEvent = lambda: None
+            self.scene.mousePressEvent = lambda *args, **kargs: None
 
         # refresh canvas? view ?
 
@@ -123,7 +125,7 @@ class Window():
         if event.key() != QtCore.Qt.Key_Escape:
             self.ui.savedKeyPressEvent(event)
 
-    def imageViewMouseMove(self, event):
+    def mousePosToStatusBar(self, event):
         pos = event.lastScenePos()
         x = int(pos.x())
         y = int(pos.y())
@@ -136,9 +138,9 @@ class Window():
 
     def setZoomRatio(self):
         try:
-            newZoomRatio = int(self.ui.zoomLineEdit.text())
+            newZoomRatio = float(self.ui.zoomLineEdit.text())
         except ValueError:
-            warning("Zoom ratio : only int value allowed")
+            warning("Zoom ratio : only numbers allowed")
             return self.updateZoomRatio()
 
         if self.zoomRatio != newZoomRatio:
@@ -146,32 +148,31 @@ class Window():
             self.ui.imageView.resetTransform()
             self.ui.imageView.scale(self.zoomRatio / 100, self.zoomRatio / 100)
 
+
     def fitWindow(self):
         self.ui.imageView.fitInView(self.scene.sceneRect(), QtCore.Qt.KeepAspectRatio)
         self.updateZoomRatio()
 
     def updateZoomRatio(self):
-        width_ratio = int(self.ui.imageView.width() / self.pixmap.width() * 100)
-        height_ratio = int(self.ui.imageView.height() / self.pixmap.height() * 100)
-        self.ui.zoomLineEdit.setText(str(min(width_ratio, height_ratio)))
+        width_ratio = self.ui.imageView.width() / self.pixmap.width() * 100
+        height_ratio = self.ui.imageView.height() / self.pixmap.height() * 100
+        self.ui.zoomLineEdit.setText(format(
+            min(width_ratio, height_ratio), '.2f'))
+
 
 
 class ImageScene(QtWidgets.QGraphicsScene):
-    # Need a new QGraphicsScene class to manage multi
-    # callback to mouseMoveEvent 
+    # doesnt do much but need it because overiding
+    # Qt builtin method doest work well.
 
     def __init__(self,parent = None):
         super(ImageScene, self).__init__(parent)
-        self.callbacks = {}
 
     def mouseMoveEvent(self, *args, **kargs):
         return QtWidgets.QGraphicsScene.mouseMoveEvent(self, *args, **kargs)
 
     def mousePressEvent(self, *args, **kargs):
-        print('Pressed')
         return QtWidgets.QGraphicsScene.mousePressEvent(self, *args, **kargs)
-
-
 
 
 if __name__ == '__main__':

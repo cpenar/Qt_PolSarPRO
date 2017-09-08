@@ -5,6 +5,11 @@ from logging import critical, error, warning, info, debug
 
 
 class CbManager():
+    """
+    Qt events doesnt have a connect() method to connect several
+    callback like signals do.
+    This class implement that mechanism.
+    """
     def __init__(self):
         self.replacers = []
 
@@ -28,12 +33,13 @@ class CbManager():
         replacer['callbacks'] = [cb]
         replacer['oldfunc'] = oldfunc
         replacer['newfunc'] = lambda *args, **kargs: (
-                self.calls(replacer, *args, **kargs))
+                self._calls(replacer, *args, **kargs))
+
         oldfunc = replacer['newfunc']
         self.replacers.append(replacer)
         return replacer['newfunc'], replacer
 
-    def calls(self, replacer, *args, **kargs):
+    def _calls(self, replacer, *args, **kargs):
         for cb in replacer['callbacks']:
             cb(*args, **kargs)
         replacer['oldfunc'](*args, **kargs)
