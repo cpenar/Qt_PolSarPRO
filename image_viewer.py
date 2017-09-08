@@ -1,23 +1,21 @@
 #!/usr/bin/env python3
 # -*- codding: utf-8 -*-
 
-
-
-# -*- coding: utf-8 -*- 
-
 import sys 
 import os 
 from logging import critical, error, warning, info, debug
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGraphicsPixmapItem
+
+from lib.callback_manager import CbManager
 
 default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp'
 
-class GUI(QtWidgets.QDialog):
+class Window():
     def __init__(self):
-        super(GUI, self).__init__()
         # Reserved attributes name
         self.zoomRatio = None
         self.image = None
@@ -25,10 +23,17 @@ class GUI(QtWidgets.QDialog):
         self.scene = None
         self.ui = None
         self.currentpoly = []
-        self.polycollection = []
+        self.polygonCollection = []
+        self.cbm = CbManager()
 
         # .ui loader
         self.ui = uic.loadUi('image_viewer.ui')
+
+        # suppress Escape key closing event for Dialog window
+        self.modify_keyPressEvent()
+
+        # opening and showing the window
+        self.ui.show()
 
         # loading image
         try:
@@ -37,21 +42,16 @@ class GUI(QtWidgets.QDialog):
             error("Couldn't load " + default_image_path)
 
         if self.image.isNull():
-            warning("ERR: pas d'image chargé")
+            warning("ERR: No image loaded")
 
         # setting showed pixmap
         self.pixmap = QtGui.QPixmap.fromImage(self.image)
         self.pixmapItem = QGraphicsPixmapItem(self.pixmap, self.scene)
 
-        self.scene = QtWidgets.QGraphicsScene()
+        self.scene = ImageScene()
         self.scene.addPixmap(self.pixmap)
 
         self.ui.imageView.setScene(self.scene)
-
-        self.ui.show()
-
-        # suppress Escape key closing event for Dialog
-        self.modify_keyPressEvent()
 
         # signals connection
         self.ui.zoomLineEdit.editingFinished.connect(self.setZoomRatio)
@@ -62,42 +62,58 @@ class GUI(QtWidgets.QDialog):
 
         # events connection
         self.ui.imageView.setMouseTracking(True)
-        self.scene.mouseMoveEvent = self.imageViewMouseMove
+        self.scene.mouseMoveEvent, mouseMoveRep = self.cbm.addCallback(
+                self.scene.mouseMoveEvent, self.imageViewMouseMove)
 
         # must be after show() method
         self.fitWindow()
 
     def start_draw_polygon(self):
-        print('menu add poly')
-        # 1. connect un event mouse click vers self.next_poly_coord
         self.scene.mousePressEvent = self.nextPolyCoord
-        # 2. connect mouse motion vers self.draw_temp_segment
+        self.scene.mouseMoveEvent, _ = self.cbm.addCallback(self.scene.mouseMoveEvent, self.draw_temp_segment)
+
+    def draw_temp_segment(self, event):
+        pass
+        
 
     def nextPolyCoord(self, event):
-        print("cliecked")
+        # Draw the polygon segments while vertices are
+        # defined with mouse clicks.
+        # store the polygon when it is closed.
         if not event.button() in (Qt.LeftButton, Qt.RightButton): return
 
         x, y = event.lastScenePos().x(), event.lastScenePos().y()
 
         # Not in image ? -> nothing to do
-        if not (x in range(self.image.width()) and \
-                y in range(self.image.height())):
+        if not (int(x) in range(self.image.width()) and \
+                int(y) in range(self.image.height())):
             return
 
         self.currentpoly.append((x, y))
 
         if len(self.currentpoly) > 1:
-            self.draw_poly_segment(self.currentpoly[-1], self.currentpoly[-2])
+            self.draw_segment(self.currentpoly[-1], self.currentpoly[-2])
 
         # right button -> last segment
-        if event.button() == Qt.RightButton():
-            self.polycollection.append(self.currentpoly)
+        if event.button() == Qt.RightButton:
+            self.polygonCollection.append(self.currentpoly)
             # draw last segment
-            self.draw_poly_segment(self.currentpoly[-1], self.currentpoly[0])
+            self.draw_segment(self.currentpoly[-1], self.currentpoly[0])
             # reset currentpoly
             self.currentpoly = []
+            # remove draw_temp_segment callback
+            self.cbm.removeCallbackFromReplacer(
+                    self.mouseMoveRep, self.draw_temp_segment)
+            # remove mousePressEvent
+            self.scene.mousePressEvent = lambda: None
 
         # refresh canvas? view ?
+
+    def draw_segment(self, pt1, pt2, color="k"):
+        x1, y1, x2, y2 = pt1[0], pt1[1], pt2[0], pt2[1]
+        # a styled pen for an easier view not depending of zoom factor
+        pen = QtGui.QPen(Qt.black, 0)
+        return self.scene.addLine(QtCore.QLineF(x1, y1, x2, y2), pen=pen)
 
     def modify_keyPressEvent(self):
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent
@@ -139,7 +155,26 @@ class GUI(QtWidgets.QDialog):
         height_ratio = int(self.ui.imageView.height() / self.pixmap.height() * 100)
         self.ui.zoomLineEdit.setText(str(min(width_ratio, height_ratio)))
 
+
+class ImageScene(QtWidgets.QGraphicsScene):
+    # Need a new QGraphicsScene class to manage multi
+    # callback to mouseMoveEvent 
+
+    def __init__(self,parent = None):
+        super(ImageScene, self).__init__(parent)
+        self.callbacks = {}
+
+    def mouseMoveEvent(self, *args, **kargs):
+        return QtWidgets.QGraphicsScene.mouseMoveEvent(self, *args, **kargs)
+
+    def mousePressEvent(self, *args, **kargs):
+        print('Pressed')
+        return QtWidgets.QGraphicsScene.mousePressEvent(self, *args, **kargs)
+
+
+
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    window = GUI()
+    window = Window()
     sys.exit(app.exec_())
