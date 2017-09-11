@@ -4,42 +4,68 @@
 from logging import critical, error, warning, info, debug
 
 
-class CbManager():
+def cbManager(function2overload, firstCallback):
+    """
+    Better this function for easy initialisation than
+    the CbCallback class
+
+    Example of use:
+
+    Initalisation:
+        function2overload, manager = cbManager(function2overload, firstCallBack)
+
+    conencting more callbacks:
+        manager.connect(anotherCallback)
+    """
+
+    cbm = _CbManager(function2overload)
+    cbm.connect(firstCallback)
+    cbm._activatedOriginalFunction = True
+    return cbm._calls, cbm
+
+
+class _CbManager():
     """
     Qt events doesnt have a connect() method to connect several
     callback like signals do.
     This class implement that mechanism.
     """
-    def __init__(self):
-        self.replacers = []
 
-    def removeCallbackFromReplacer(self, replacer, cb):
-        if cb in replacer['callbacks']:
-            replacer['callbacks'].remove(cb)
+    def __init__(self, function2overload):
+        self.callbacks = []
+        self.savedfunc = function2overload
+
+    def removeCallback(self, cb):
+        if cb in self.callbacks:
+            self.callbacks.remove(cb)
+            return True
         else:
-            warning(cb.__name__ + " doesnt exist in " +
-                    replacer['oldfunc'].__name__ + " replacer")
+            warning(cb.__name__ + " doesnt exist in this callback manager.")
+            return False
 
-    def addCallback(self, oldfunc, cb):
-        # do we allready have a replacer for that func ?
-        for replacer in self.replacers:
-            if replacer['newfunc'] is oldfunc:
-                replacer['callbacks'].append(cb)
-                return replacer['newfunc'], replacer
+    def removeAllCallback():
+        self.callbacks = []
 
-        # we didnt find any replacer for that oldfunc
-        # we create a new one
-        replacer = {}
-        replacer['callbacks'] = [cb]
-        replacer['oldfunc'] = oldfunc
-        replacer['newfunc'] = lambda *args, **kargs: (
-                self._calls(replacer, *args, **kargs))
+    def connect(self, cb):
+        if cb in self.callbacks:
+            warning(cb.__name__ + " allready connected. Cant add more")
+            return False
+        else:
+            self.callbacks.append(cb)
+            return True
 
-        oldfunc = replacer['newfunc']
-        self.replacers.append(replacer)
-        return replacer['newfunc'], replacer
+    def deactivateOriginalFunction():
+        self._activatedOriginalFunction = False
 
-    def _calls(self, replacer, *args, **kargs):
-        for cb in replacer['callbacks']:
+    def reactivateOriginalFunction():
+        self._activatedOriginalFunction = True
+
+    def resetOriginFunction():
+        self.callbacks = []
+        return self.savedfunc
+        
+    def _calls(self, *args, **kargs):
+        for cb in self.callbacks:
             cb(*args, **kargs)
-        replacer['oldfunc'](*args, **kargs)
+        if self._activatedOriginalFunction:
+            return self.savedfunc(*args, **kargs)

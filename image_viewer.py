@@ -10,7 +10,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
-from lib.callback_manager import CbManager
+from lib.callback_manager import cbManager
 
 default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp'
 
@@ -24,7 +24,7 @@ class Window():
         self.ui = None
         self.currentpoly = []
         self.polygonCollection = []
-        self.cbm = CbManager()
+        self.cbm = None
 
         # .ui loader
         self.ui = uic.loadUi('image_viewer.ui')
@@ -62,7 +62,7 @@ class Window():
 
         # events connection
         self.ui.imageView.setMouseTracking(True)
-        self.scene.mouseMoveEvent, self.mouseMoveRep = self.cbm.addCallback(
+        self.scene.mouseMoveEvent, self.mouseMoveEventCbm = cbManager(
                 self.scene.mouseMoveEvent, self.mousePosToStatusBar)
 
         # must be after show() method
@@ -70,8 +70,7 @@ class Window():
 
     def start_draw_polygon(self):
         self.scene.mousePressEvent = self.nextPolyCoord
-        self.scene.mouseMoveEvent, _ = self.cbm.addCallback(
-                self.scene.mouseMoveEvent, self.draw_temp_segment)
+        self.mouseMoveEventCbm.connect(self.draw_temp_segment)
 
     def draw_temp_segment(self, event):
         debug("Not implemented")
@@ -104,8 +103,7 @@ class Window():
             # reset currentpoly
             self.currentpoly = []
             # remove draw_temp_segment callback
-            self.cbm.removeCallbackFromReplacer(
-                    self.mouseMoveRep, self.draw_temp_segment)
+            self.mouseMoveEventCbm.removeCallback(self.draw_temp_segment)
             # remove mousePressEvent
             self.scene.mousePressEvent = lambda *args, **kargs: None
 
