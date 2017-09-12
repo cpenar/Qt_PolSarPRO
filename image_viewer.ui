@@ -35,6 +35,8 @@
       </property>
       <addaction name="actionDraw_polygon"/>
       <addaction name="actionExtract_selection"/>
+      <addaction name="actionRemove_last_polygon"/>
+      <addaction name="actionRemove_all_selection"/>
      </widget>
      <addaction name="menu_Image"/>
      <addaction name="menu_Selection"/>
@@ -149,6 +151,16 @@
   <action name="actionDraw_polygon">
    <property name="text">
     <string>&amp;Draw polygon</string>
+   </property>
+  </action>
+  <action name="actionRemove_last_polygon">
+   <property name="text">
+    <string>Remove &amp;last polygon</string>
+   </property>
+  </action>
+  <action name="actionRemove_all_selection">
+   <property name="text">
+    <string>Remove &amp;all selection</string>
    </property>
   </action>
  </widget>

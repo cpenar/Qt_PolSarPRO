@@ -2,8 +2,10 @@
 # -*- codding: utf-8 -*-
 
 import sys
+import copy
+import json
 #import os
-from logging import error, warning
+from logging import error, warning, info
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt
@@ -15,8 +17,10 @@ default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_A
 
 
 class Window():
-    def __init__(self):
+    def __init__(self, state):
         # Reserved attributes name
+        self.globState = state
+        self.config = copy.deepcopy(state['config'])
         self.ui = None
         self.zoomRatio = None
         self.image = None
@@ -66,6 +70,12 @@ class Window():
         # menu actions
         self.ui.actionFit_to_window.triggered.connect(self.fitWindow)
         self.ui.actionDraw_polygon.triggered.connect(self.start_draw_polygon)
+        self.ui.actionRemove_last_polygon.triggered.connect(
+            self.remove_last_poly)
+        self.ui.actionRemove_all_selection.triggered.connect(
+            self.remove_all_selection)
+        self.ui.actionExtract_selection.triggered.connect(
+            self.extract_selection)
 
         # events connection using the cbManager
         self.scene.mouseMoveEvent, self.mouseMoveECbm = cbManager(
@@ -78,6 +88,33 @@ class Window():
         # a timeout to be sure that we resize the imageView
         # after the window manager is done decorating the window
         #QtCore.QTimer.singleShot(500, self.fitWindow)
+
+    def extract_selection(self):
+        polygons = self.polygonSelection['polygons']
+        if not polygons:
+            error('Create polygon selection first')
+            return
+
+        training_file_path = self.config['tempDir'] + '/training.json'
+        info('Saving polygon selections in ' + training_file_path)
+        with open(training_file_path, 'w') as fp:
+            json.dump(polygons, fp)
+
+    def remove_all_selection(self):
+        pSelect = self.polygonSelection
+        while pSelect['polyQsegments']:
+            self.remove_last_poly()
+
+    def remove_last_poly(self):
+        pSelect = self.polygonSelection
+        if not pSelect['polyQsegments']:
+            warning('No polygon selection to remove')
+            return
+
+        lastPoly = pSelect['polyQsegments'].pop()
+        pSelect['polygons'].pop()
+        while lastPoly:
+            self.scene.removeItem(lastPoly.pop())
 
     def start_draw_polygon(self):
         self.mouseMoveECbm.connect(self.draw_temp_segment)
@@ -98,12 +135,13 @@ class Window():
             self.scene.removeItem(pSelect['tempQsegments'].pop())
 
         if pSelect['currentpoly']:
-            pSelect['tempQsegments'].append(
-                self.draw_segment(pSelect['currentpoly'][-1], (x, y)))
 
-            pSelect['tempQsegments'].append(
-                self.draw_segment(pSelect['currentpoly'][0], (x, y),
-                                  Qt.white))
+            segment = self.draw_segment(pSelect['currentpoly'][-1], (x, y))
+            pSelect['tempQsegments'].append(segment)
+
+            segment = self.draw_segment(
+                pSelect['currentpoly'][0], (x, y), Qt.white)
+            pSelect['tempQsegments'].append(segment)
 
     def removeTempQsegments(self):
         tempQsegments = self.polygonSelection['tempQsegments']
@@ -129,14 +167,15 @@ class Window():
         current.append((x, y))
 
         if len(current) > 1:
-            pSelect['polyQsegments'].append(
+            pSelect['polyQsegments'][-1].append(
                 self.draw_segment(current[-1], current[-2]))
 
             # right button -> last segment
         if event.button() == Qt.RightButton:
-            pSelect['polygons'].append(current)
+            pSelect['polygons'].append(current.copy())
             # draw last segment
-            self.draw_segment(current[-1], current[0])
+            pSelect['polyQsegments'][-1].append(
+                self.draw_segment(current[-1], current[0]))
             # reset currentpoly
             current.clear()
             # remove callbacks
@@ -205,6 +244,13 @@ class ImageScene(QtWidgets.QGraphicsScene):
 
 
 if __name__ == '__main__':
+    # TEMP STATE TO REMOVE
+    # anyway should not call __main__
+    state = {
+            'config': {
+                'tempDir': '/tmp/PolSARpro/',
+                }
+            }
     app = QtWidgets.QApplication(sys.argv)
-    window = Window()
+    window = Window(state)
     sys.exit(app.exec_())
