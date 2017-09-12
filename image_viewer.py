@@ -100,14 +100,22 @@ class Window():
         if pSelect['currentpoly']:
             pSelect['tempQsegments'].append(
                 self.draw_segment(pSelect['currentpoly'][-1], (x, y)))
+
             pSelect['tempQsegments'].append(
-                self.draw_segment(pSelect['currentpoly'][0], (x, y)))
+                self.draw_segment(pSelect['currentpoly'][0], (x, y),
+                                  Qt.white))
+
+    def removeTempQsegments(self):
+        tempQsegments = self.polygonSelection['tempQsegments']
+        while tempQsegments:
+            self.scene.removeItem(tempQsegments.pop())
 
     def nextPolyCoord(self, event):
         # Draw the polygon segments while vertices are
         # defined with mouse clicks.
         # Store the polygon when it is closed.
         pSelect = self.polygonSelection
+        current = pSelect['currentpoly']
         if not event.button() in (Qt.LeftButton, Qt.RightButton):
             return
 
@@ -118,27 +126,29 @@ class Window():
                 int(y) in range(self.image.height())):
             return
 
-        pSelect['currentpoly'].append((x, y))
+        current.append((x, y))
 
-        if len(self.currentpoly) > 1:
+        if len(current) > 1:
             pSelect['polyQsegments'].append(
-                self.draw_segment(self.currentpoly[-1], self.currentpoly[-2]))
+                self.draw_segment(current[-1], current[-2]))
 
             # right button -> last segment
         if event.button() == Qt.RightButton:
-            pSelect['polygons'].append(self.currentpoly)
+            pSelect['polygons'].append(current)
             # draw last segment
-            self.draw_segment(self.currentpoly[-1], self.currentpoly[0])
+            self.draw_segment(current[-1], current[0])
             # reset currentpoly
-            self.currentpoly = []
+            current.clear()
             # remove callbacks
             self.mouseMoveECbm.removeCallback(self.draw_temp_segment)
             self.mousePressECbm.removeCallback(self.nextPolyCoord)
+            # remove tempQsegments
+            self.removeTempQsegments()
 
-    def draw_segment(self, pt1, pt2):
+    def draw_segment(self, pt1, pt2, color=Qt.black):
         x1, y1, x2, y2 = pt1[0], pt1[1], pt2[0], pt2[1]
         # a styled pen for an easier view not depending of zoom factor
-        pen = QtGui.QPen(Qt.black, 0)
+        pen = QtGui.QPen(color, 0)
         return self.scene.addLine(QtCore.QLineF(x1, y1, x2, y2), pen=pen)
 
     def dontCloseWithEscapeKey(self, event):
