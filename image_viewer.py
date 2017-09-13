@@ -75,6 +75,10 @@ class Window():
             self.remove_all_selection)
         self.ui.actionExtract_selection.triggered.connect(
             self.extract_selection)
+        self.ui.actionRotate_Right.triggered.connect(
+                self.rotateRight)
+        self.ui.actionRotate_Left.triggered.connect(
+                self.rotateLeft)
 
         ### QEvent management ###
 
@@ -91,6 +95,12 @@ class Window():
         self.scene.mousePressEvent, self.mousePressECbm = cbManager(
             self.scene.mousePressEvent)
 
+    def rotateRight(self):
+        self.ui.imageView.rotate(90)
+
+    def rotateLeft(self):
+        self.ui.imageView.rotate(-90)
+
     def wheelEvent(self, event):
         zoomFactor = 1.1
         if event.angleDelta().y() < 0:
@@ -98,8 +108,6 @@ class Window():
         self.zoomRatio = self.zoomRatio * zoomFactor
         self.ui.imageView.scale(zoomFactor, zoomFactor)
         self.ui.zoomLineEdit.setText(format(self.zoomRatio, '.2f'))
-
-
 
     def extract_selection(self):
         polygons = self.polygonSelection['polygons']

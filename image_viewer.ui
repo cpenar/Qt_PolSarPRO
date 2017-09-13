@@ -19,15 +19,14 @@
      <property name="nativeMenuBar">
       <bool>false</bool>
      </property>
-     <widget class="QMenu" name="menu_Image">
+     <widget class="QMenu" name="menu_View">
       <property name="title">
-       <string>&amp;Image</string>
+       <string>&amp;View</string>
       </property>
       <addaction name="actionFit_to_window"/>
       <addaction name="separator"/>
-      <addaction name="actionHorizontal_flip"/>
-      <addaction name="actionVertical_flip"/>
-      <addaction name="actionRotate"/>
+      <addaction name="actionRotate_Right"/>
+      <addaction name="actionRotate_Left"/>
      </widget>
      <widget class="QMenu" name="menu_Selection">
       <property name="title">
@@ -38,7 +37,7 @@
       <addaction name="actionRemove_last_polygon"/>
       <addaction name="actionRemove_all_selection"/>
      </widget>
-     <addaction name="menu_Image"/>
+     <addaction name="menu_View"/>
      <addaction name="menu_Selection"/>
     </widget>
    </item>
@@ -125,7 +124,7 @@
   </layout>
   <action name="actionFit_to_window">
    <property name="text">
-    <string>&amp;Fit to window</string>
+    <string>&amp;Fit to window and reset rotate</string>
    </property>
   </action>
   <action name="actionHorizontal_flip">
@@ -161,6 +160,21 @@
   <action name="actionRemove_all_selection">
    <property name="text">
     <string>Remove &amp;all selection</string>
+   </property>
+  </action>
+  <action name="actionRotate_left">
+   <property name="text">
+    <string>Rotate &amp;left</string>
+   </property>
+  </action>
+  <action name="actionRotate_Right">
+   <property name="text">
+    <string>Rotate &amp;Right</string>
+   </property>
+  </action>
+  <action name="actionRotate_Left">
+   <property name="text">
+    <string>Rotate &amp;Left</string>
    </property>
   </action>
  </widget>
