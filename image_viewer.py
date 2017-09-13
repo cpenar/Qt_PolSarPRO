@@ -38,10 +38,6 @@ class Window():
         # .ui loader
         self.ui = uic.loadUi('image_viewer.ui')
 
-        # suppress Escape key closing event for Dialog window
-        self.ui.savedKeyPressEvent = self.ui.keyPressEvent
-        self.ui.keyPressEvent = self.dontCloseWithEscapeKey
-
         # opening and showing the window
         self.ui.show()
 
@@ -63,6 +59,9 @@ class Window():
 
         self.ui.imageView.setScene(self.scene)
         self.ui.imageView.setMouseTracking(True)
+        self.ui.imageView.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+
+        self.fitWindow()
 
         # signals connection
         self.ui.zoomLineEdit.editingFinished.connect(self.setZoomRatio)
@@ -77,17 +76,30 @@ class Window():
         self.ui.actionExtract_selection.triggered.connect(
             self.extract_selection)
 
+        ### QEvent management ###
+
+        # suppress Escape key closing event for Dialog window
+        self.ui.savedKeyPressEvent = self.ui.keyPressEvent
+        self.ui.keyPressEvent = self.dontCloseWithEscapeKey
+
+        # Wheel event for zooming
+        self.ui.imageView.wheelEvent = self.wheelEvent
+
         # events connection using the cbManager
         self.scene.mouseMoveEvent, self.mouseMoveECbm = cbManager(
             self.scene.mouseMoveEvent, self.mousePosToStatusBar)
         self.scene.mousePressEvent, self.mousePressECbm = cbManager(
             self.scene.mousePressEvent)
 
-        # must be after show() method
-        self.fitWindow()
-        # a timeout to be sure that we resize the imageView
-        # after the window manager is done decorating the window
-        #QtCore.QTimer.singleShot(500, self.fitWindow)
+    def wheelEvent(self, event):
+        zoomFactor = 1.1
+        if event.angleDelta().y() < 0:
+            zoomFactor = 1.0 / zoomFactor
+        self.zoomRatio = self.zoomRatio * zoomFactor
+        self.ui.imageView.scale(zoomFactor, zoomFactor)
+        self.ui.zoomLineEdit.setText(format(self.zoomRatio, '.2f'))
+
+
 
     def extract_selection(self):
         polygons = self.polygonSelection['polygons']
@@ -117,6 +129,9 @@ class Window():
             self.scene.removeItem(lastPoly.pop())
 
     def start_draw_polygon(self):
+        # Disconnect drag mode
+        self.ui.imageView.setDragMode(QtWidgets.QGraphicsView.NoDrag)
+
         self.mouseMoveECbm.connect(self.draw_temp_segment)
         self.mousePressECbm.connect(self.nextPolyCoord)
         self.polygonSelection['polyQsegments'].append([])
@@ -183,6 +198,8 @@ class Window():
             self.mousePressECbm.removeCallback(self.nextPolyCoord)
             # remove tempQsegments
             self.removeTempQsegments()
+            self.ui.imageView.setDragMode(
+                QtWidgets.QGraphicsView.ScrollHandDrag)
 
     def draw_segment(self, pt1, pt2, color=Qt.black):
         x1, y1, x2, y2 = pt1[0], pt1[1], pt2[0], pt2[1]
@@ -210,23 +227,20 @@ class Window():
             newZoomRatio = float(self.ui.zoomLineEdit.text())
         except ValueError:
             warning("Zoom ratio : only numbers allowed")
-            return self.updateZoomRatio()
-
+            self.ui.zoomLineEdit.setText(format(self.zoomRatio, '.2f'))
+            return False
         if self.zoomRatio != newZoomRatio:
             self.zoomRatio = newZoomRatio
             self.ui.imageView.resetTransform()
             self.ui.imageView.scale(self.zoomRatio / 100, self.zoomRatio / 100)
 
     def fitWindow(self):
-        self.ui.imageView.fitInView(
-            self.scene.sceneRect(), QtCore.Qt.KeepAspectRatio)
-        self.updateZoomRatio()
+        widthRatio = self.ui.imageView.size().width() / self.pixmap.width()
+        heightRatio = self.ui.imageView.size().height() / self.pixmap.height()
 
-    def updateZoomRatio(self):
-        width_ratio = self.ui.imageView.width() / self.pixmap.width() * 100
-        height_ratio = self.ui.imageView.height() / self.pixmap.height() * 100
-        self.ui.zoomLineEdit.setText(format(
-            min(width_ratio, height_ratio), '.2f'))
+        ratio = min(widthRatio, heightRatio)
+        self.ui.zoomLineEdit.setText(format(ratio*98, '.2f'))
+        self.setZoomRatio()
 
 
 class ImageScene(QtWidgets.QGraphicsScene):
@@ -247,10 +261,11 @@ if __name__ == '__main__':
     # TEMP STATE TO REMOVE
     # anyway should not call __main__
     state = {
-            'config': {
-                'tempDir': '/tmp/PolSARpro/',
-                }
+        'config': {
+            'tempDir': '/tmp/PolSARpro/',
             }
+        }
+
     app = QtWidgets.QApplication(sys.argv)
     window = Window(state)
     sys.exit(app.exec_())
