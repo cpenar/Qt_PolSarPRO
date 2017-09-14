@@ -32,7 +32,8 @@
       <property name="title">
        <string>&amp;Selection</string>
       </property>
-      <addaction name="actionDraw_polygon"/>
+      <addaction name="actionDraw_same_class_polygon"/>
+      <addaction name="actionDraw_new_class_polygon"/>
       <addaction name="actionExtract_selection"/>
       <addaction name="actionRemove_last_polygon"/>
       <addaction name="actionRemove_all_selection"/>
@@ -175,6 +176,16 @@
   <action name="actionRotate_Left">
    <property name="text">
     <string>Rotate &amp;Left</string>
+   </property>
+  </action>
+  <action name="actionDraw_new_class_polygon">
+   <property name="text">
+    <string>Draw &amp;new class polygon</string>
+   </property>
+  </action>
+  <action name="actionDraw_same_class_polygon">
+   <property name="text">
+    <string>Draw &amp;same class polygon</string>
    </property>
   </action>
  </widget>

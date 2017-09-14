@@ -14,11 +14,12 @@ from PyQt5.QtWidgets import QGraphicsPixmapItem
 from lib.callback_manager import cbManager
 
 default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp'
+#default_image_path = '/tmp/huge.bmp'
 
 
 class Window():
     def __init__(self, state):
-        # Reserved attributes name
+        # Reserved attribute names
         self.globState = state
         self.config = copy.deepcopy(state['config'])
         self.ui = None
@@ -32,8 +33,15 @@ class Window():
             'polyQsegments': [],
             'tempQsegments': [],
             'currentpoly': [],
-            'polygons': [],
+            'classPolygons': [],
             }
+
+        self.Qcolors =('black', 'blue', 'red', 'cyan', 
+            'darkBlue', 'darkGray', 'darkGreen',
+            'darkMagenta', 'darkRed', 'darkYellow', 'gray', 
+            'green', 'lightGray', 'magenta',   'yellow')
+
+        self.color = 0
 
         # .ui loader
         self.ui = uic.loadUi('image_viewer.ui')
@@ -46,6 +54,8 @@ class Window():
             self.image = QtGui.QImage(default_image_path)
         except:
             error("Couldn't load " + default_image_path)
+
+        #self.image = self.image.mirrored()
 
         if self.image.isNull():
             warning("ERR: No image loaded")
@@ -68,7 +78,10 @@ class Window():
 
         # menu actions
         self.ui.actionFit_to_window.triggered.connect(self.fitWindow)
-        self.ui.actionDraw_polygon.triggered.connect(self.start_draw_polygon)
+        self.ui.actionDraw_new_class_polygon.triggered.connect(
+            self.draw_new_class_polygon)
+        self.ui.actionDraw_same_class_polygon.triggered.connect(
+            self.draw_same_class_polygon)
         self.ui.actionRemove_last_polygon.triggered.connect(
             self.remove_last_poly)
         self.ui.actionRemove_all_selection.triggered.connect(
@@ -76,9 +89,9 @@ class Window():
         self.ui.actionExtract_selection.triggered.connect(
             self.extract_selection)
         self.ui.actionRotate_Right.triggered.connect(
-                self.rotateRight)
+            self.rotateRight)
         self.ui.actionRotate_Left.triggered.connect(
-                self.rotateLeft)
+            self.rotateLeft)
 
         ### QEvent management ###
 
@@ -110,20 +123,25 @@ class Window():
         self.ui.zoomLineEdit.setText(format(self.zoomRatio, '.2f'))
 
     def extract_selection(self):
-        polygons = self.polygonSelection['polygons']
-        if not polygons:
+        classes = self.polygonSelection['classPolygons']
+        if not classes:
             error('Create polygon selection first')
             return
 
         training_file_path = self.config['tempDir'] + '/training.json'
         info('Saving polygon selections in ' + training_file_path)
         with open(training_file_path, 'w') as fp:
-            json.dump(polygons, fp)
+            json.dump(classes, fp, indent=4, separators=(',', 'g '))
 
     def remove_all_selection(self):
         pSelect = self.polygonSelection
+
+        # removing all drawed QLines
         while pSelect['polyQsegments']:
             self.remove_last_poly()
+
+        # reseting classPolygon
+        pSelect['classPolygons'] = []
 
     def remove_last_poly(self):
         pSelect = self.polygonSelection
@@ -131,18 +149,35 @@ class Window():
             warning('No polygon selection to remove')
             return
 
+        # removing drawed QLines
         lastPoly = pSelect['polyQsegments'].pop()
-        pSelect['polygons'].pop()
         while lastPoly:
             self.scene.removeItem(lastPoly.pop())
 
-    def start_draw_polygon(self):
+        # removing stored polygon
+        if pSelect['classPolygons'][-1] == []:
+            pSelect['classPolygons'].pop()
+        pSelect['classPolygons'][-1].pop()
+
+    def draw_new_class_polygon(self):
         # Disconnect drag mode
         self.ui.imageView.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-
+        self.color = (self.color + 1) % len(self.Qcolors)
+        self.polygonSelection['classPolygons'].append([])
+        self.polygonSelection['polyQsegments'].append([])
         self.mouseMoveECbm.connect(self.draw_temp_segment)
         self.mousePressECbm.connect(self.nextPolyCoord)
+
+    def draw_same_class_polygon(self):
+        pSelect = self.polygonSelection
+        if not pSelect['classPolygons']:
+            warning('Start creating class first')
+            return False
+
+        self.ui.imageView.setDragMode(QtWidgets.QGraphicsView.NoDrag)
         self.polygonSelection['polyQsegments'].append([])
+        self.mouseMoveECbm.connect(self.draw_temp_segment)
+        self.mousePressECbm.connect(self.nextPolyCoord)
 
     def draw_temp_segment(self, event):
         pSelect = self.polygonSelection
@@ -195,7 +230,7 @@ class Window():
 
             # right button -> last segment
         if event.button() == Qt.RightButton:
-            pSelect['polygons'].append(current.copy())
+            pSelect['classPolygons'][-1].append(current.copy())
             # draw last segment
             pSelect['polyQsegments'][-1].append(
                 self.draw_segment(current[-1], current[0]))
@@ -209,8 +244,10 @@ class Window():
             self.ui.imageView.setDragMode(
                 QtWidgets.QGraphicsView.ScrollHandDrag)
 
-    def draw_segment(self, pt1, pt2, color=Qt.black):
+    def draw_segment(self, pt1, pt2, color=None):
         x1, y1, x2, y2 = pt1[0], pt1[1], pt2[0], pt2[1]
+        if color is None:
+            color = getattr(Qt, self.Qcolors[self.color])
         # a styled pen for an easier view not depending of zoom factor
         pen = QtGui.QPen(color, 0)
         return self.scene.addLine(QtCore.QLineF(x1, y1, x2, y2), pen=pen)
