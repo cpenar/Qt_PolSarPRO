@@ -9,7 +9,6 @@ from logging import error, warning, info
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 from lib.callback_manager import cbManager
 
@@ -18,27 +17,24 @@ default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_A
 
 
 class Window():
-    def __init__(self, state):
+    def __init__(self, state, image=None):
         # Reserved attribute names
         self.globState = state
         self.config = copy.deepcopy(state['config'])
         self.ui = None
+
         self.zoomRatio = None
         self.image = None
         self.pixmap = None
         self.scene = None
-        self.currentpoly = []
         self.cbm = None
-        self.polygonSelection = {
-            'polyQsegments': [],
-            'tempQsegments': [],
-            'currentpoly': [],
-            'classPolygons': [],
-            }
+        self.polygonSelection = None
 
-        self.Qcolors =('black', 'blue', 'red', 'cyan', 
+        self.currentpoly = []
+        self.Qcolors = (
+            'black', 'blue', 'red', 'cyan',
             'darkBlue', 'darkGray', 'darkGreen',
-            'darkMagenta', 'darkRed', 'darkYellow', 'gray', 
+            'darkMagenta', 'darkRed', 'darkYellow', 'gray',
             'green', 'lightGray', 'magenta',   'yellow')
 
         self.color = 0
@@ -50,24 +46,21 @@ class Window():
         self.ui.show()
 
         # loading image
-        try:
-            self.image = QtGui.QImage(default_image_path)
-        except:
-            error("Couldn't load " + default_image_path)
+        if image is None:
+            try:
+                self.image = QtGui.QImage(default_image_path)
+            except:
+                error("Couldn't load " + default_image_path)
+        else:
+            self.image = image
 
         #self.image = self.image.mirrored()
 
         if self.image.isNull():
             warning("ERR: No image loaded")
 
-        # setting showed pixmap
-        self.pixmap = QtGui.QPixmap.fromImage(self.image)
-        self.pixmapItem = QGraphicsPixmapItem(self.pixmap, self.scene)
+        self.setViewFromImage()
 
-        self.scene = ImageScene()
-        self.scene.addPixmap(self.pixmap)
-
-        self.ui.imageView.setScene(self.scene)
         self.ui.imageView.setMouseTracking(True)
         self.ui.imageView.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
 
@@ -92,6 +85,10 @@ class Window():
             self.rotateRight)
         self.ui.actionRotate_Left.triggered.connect(
             self.rotateLeft)
+        self.ui.actionFlip_Vertically.triggered.connect(
+            self.flipVertically)
+        self.ui.actionFlip_Horizontally.triggered.connect(
+            self.flipHorizontally)
 
         ### QEvent management ###
 
@@ -102,17 +99,55 @@ class Window():
         # Wheel event for zooming
         self.ui.imageView.wheelEvent = self.wheelEvent
 
+    def setViewFromImage(self):
+        self.pixmap = QtGui.QPixmap.fromImage(self.image)
+        if self.scene is not None:
+            self.scene.clear()
+            self.scene.deleteLater()
+
+        self.scene = ImageScene()
+        self.ui.imageView.setScene(self.scene)
+        self.scene.addPixmap(self.pixmap)
+
         # events connection using the cbManager
         self.scene.mouseMoveEvent, self.mouseMoveECbm = cbManager(
             self.scene.mouseMoveEvent, self.mousePosToStatusBar)
         self.scene.mousePressEvent, self.mousePressECbm = cbManager(
             self.scene.mousePressEvent)
+        self.resetPolygonSelection()
+
+    def resetPolygonSelection(self):
+        self.color = 0
+        self.polygonSelection = {
+            'polyQsegments': [],
+            'tempQsegments': [],
+            'currentpoly': [],
+            'classPolygons': [],
+            }
+
+    def flipVertically(self):
+        self.image = self.image.mirrored(vertical=True)
+        self.pixmap = QtGui.QPixmap.fromImage(self.image)
+        self.scene.clear()
+        self.scene.addPixmap(self.pixmap)
+
+    def flipHorizontally(self):
+        self.image = self.image.mirrored(horizontal=True)
+        self.pixmap = QtGui.QPixmap.fromImage(self.image)
+        self.scene.clear()
+        self.scene.addPixmap(self.pixmap)
 
     def rotateRight(self):
-        self.ui.imageView.rotate(90)
+        transfo = QtGui.QTransform()
+        transfo.rotate(90)
+        self.image = self.image.transformed(transfo)
+        self.setViewFromImage()
 
     def rotateLeft(self):
-        self.ui.imageView.rotate(-90)
+        transfo = QtGui.QTransform()
+        transfo.rotate(-90)
+        self.image = self.image.transformed(transfo)
+        self.setViewFromImage()
 
     def wheelEvent(self, event):
         zoomFactor = 1.1
@@ -193,7 +228,6 @@ class Window():
             self.scene.removeItem(pSelect['tempQsegments'].pop())
 
         if pSelect['currentpoly']:
-
             segment = self.draw_segment(pSelect['currentpoly'][-1], (x, y))
             pSelect['tempQsegments'].append(segment)
 
