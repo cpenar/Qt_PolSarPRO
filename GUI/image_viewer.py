@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
 # -*- codding: utf-8 -*-
 
-import sys
-import copy
 import json
-#import os
 from logging import error, warning, info
 
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
+from lib.gen_window import GenWindow
 from lib.callback_manager import cbManager
 
 default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp'
 #default_image_path = '/tmp/huge.bmp'
 
 
-class Window():
+class Window(GenWindow):
     def __init__(self, state, image=None):
-        # Reserved attribute names
-        self.globState = state
-        self.config = copy.deepcopy(state['config'])
-        self.ui = None
+        super().__init__(__name__, state)
 
+        # Reserved attribute names
         self.zoomRatio = None
         self.image = None
         self.pixmap = None
@@ -31,19 +27,13 @@ class Window():
         self.polygonSelection = None
 
         self.currentpoly = []
-        self.Qcolors = (
+        self.qcolors = (
             'black', 'blue', 'red', 'cyan',
             'darkBlue', 'darkGray', 'darkGreen',
             'darkMagenta', 'darkRed', 'darkYellow', 'gray',
             'green', 'lightGray', 'magenta',   'yellow')
 
         self.color = 0
-
-        # .ui loader
-        self.ui = uic.loadUi('image_viewer.ui')
-
-        # opening and showing the window
-        self.ui.show()
 
         # loading image
         if image is None:
@@ -53,8 +43,6 @@ class Window():
                 error("Couldn't load " + default_image_path)
         else:
             self.image = image
-
-        #self.image = self.image.mirrored()
 
         if self.image.isNull():
             warning("ERR: No image loaded")
@@ -197,7 +185,7 @@ class Window():
     def draw_new_class_polygon(self):
         # Disconnect drag mode
         self.ui.imageView.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-        self.color = (self.color + 1) % len(self.Qcolors)
+        self.color = (self.color + 1) % len(self.qcolors)
         self.polygonSelection['classPolygons'].append([])
         self.polygonSelection['polyQsegments'].append([])
         self.mouseMoveECbm.connect(self.draw_temp_segment)
@@ -218,7 +206,7 @@ class Window():
         pSelect = self.polygonSelection
         x, y = event.lastScenePos().x(), event.lastScenePos().y()
 
-        # Not in image ? -> nothing to do
+        # Mouse not in image ? -> nothing to do
         if not (int(x) in range(self.image.width()) and
                 int(y) in range(self.image.height())):
             return
@@ -281,7 +269,7 @@ class Window():
     def draw_segment(self, pt1, pt2, color=None):
         x1, y1, x2, y2 = pt1[0], pt1[1], pt2[0], pt2[1]
         if color is None:
-            color = getattr(Qt, self.Qcolors[self.color])
+            color = getattr(Qt, self.qcolors[self.color])
         # a styled pen for an easier view not depending of zoom factor
         pen = QtGui.QPen(color, 0)
         return self.scene.addLine(QtCore.QLineF(x1, y1, x2, y2), pen=pen)
@@ -334,17 +322,3 @@ class ImageScene(QtWidgets.QGraphicsScene):
 
     def mousePressEvent(self, *args, **kargs):
         return QtWidgets.QGraphicsScene.mousePressEvent(self, *args, **kargs)
-
-
-if __name__ == '__main__':
-    # TEMP STATE TO REMOVE
-    # anyway should not call __main__
-    state = {
-        'config': {
-            'tempDir': '/tmp/PolSARpro/',
-            }
-        }
-
-    app = QtWidgets.QApplication(sys.argv)
-    window = Window(state)
-    sys.exit(app.exec_())
