@@ -16,6 +16,7 @@ default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_A
 
 class Window(GenWindow):
     def __init__(self, state, image=None):
+        self.ui = QtWidgets.QDialog()
         super().__init__(__name__, state)
 
         # Reserved attribute names
@@ -250,7 +251,7 @@ class Window(GenWindow):
             pSelect['polyQsegments'][-1].append(
                 self.draw_segment(current[-1], current[-2]))
 
-            # right button -> last segment
+        # right button -> last segment
         if event.button() == Qt.RightButton:
             pSelect['classPolygons'][-1].append(current.copy())
             # draw last segment
@@ -311,8 +312,8 @@ class Window(GenWindow):
 
 
 class ImageScene(QtWidgets.QGraphicsScene):
-    # doesnt do much but need it because overiding
-    # Qt builtin method doest work well.
+    # doesn't do much but need it because
+    # overiding Qt builtin method doest work well.
 
     def __init__(self, parent=None):
         super(ImageScene, self).__init__(parent)
