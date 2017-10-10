@@ -1,5 +1,0 @@
-WARNING:MainThread:MainWindow:main:__init__: ERROR: missing environment variable COMPILED_PSP_PATH.
-Necessary for Dev phase.
-Set COMPILED_PSP_PATH and relaunch the app, example :
-
-export COMPILED_PSP_PATH=/some/path/to/bleh
