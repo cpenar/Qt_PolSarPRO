@@ -42,11 +42,4 @@ fi
 
 echo Starting py_launcher
 
-# This tail for development part on GNU/Linux
-tail -f log/log.txt &
-tail_pid=$!
-
-#cd GUI && ./main.py
-cd GUI/ && $PYTHON_CMD py_launcher.py
-
-kill $tail_pid
+cd GUI && $PYTHON_CMD py_launcher.py
