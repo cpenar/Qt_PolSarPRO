@@ -45,7 +45,7 @@ def log_platform_information():
 if __name__ == '__main__':
     from main import start_qt_application
     if not os.path.exists(log_rep):
-        os.makedir(log_rep)
+        os.mkdir(log_rep)
     else:
         rotate_log()
 
