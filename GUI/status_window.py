@@ -7,7 +7,7 @@ from PyQt5.QtCore import QTimer
 from lib.gen_window import GenWindow
 
 class Window(GenWindow):
-    def __init__(self, state, image=None):
+    def __init__(self, state):
         super().__init__(__name__, state)
 
         self.log_file = self.config['log_file']
@@ -22,6 +22,7 @@ class Window(GenWindow):
         try:
             while self.line:
                 self.ui.logBrowser.append(self.line.rstrip())
+                print(self.line.rstrip())
                 self.line = self.fp.readline()
         finally:
             QTimer.singleShot(200, self.log2status)

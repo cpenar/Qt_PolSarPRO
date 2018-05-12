@@ -8,7 +8,7 @@ import json
 from os.path import abspath
 from pprint import pformat
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 from lib.gen_window import GenWindow
 from status_window import Window as StatusWindow
@@ -48,27 +48,28 @@ class MainWindow(GenWindow):
 
         self.state['config']['log_file'] = self.log_file
 
-        # Initializing window
+        # Initializing main window
 
         super().__init__('main', self.state)
+
+        # Resizing to fit screen
         screenGeo = QtWidgets.QApplication.desktop().screenGeometry(self.ui)
         w, h = screenGeo.width(), screenGeo.height()
         self.ui.resize(w - 60, h - 60)
         self.ui.move(30, 30)
 
-        #TODO
-        # connecter tous les menuAction avec open_window_from_menu_entry
-        # recursivement à partir de la QMenuBar 'menubar'
-        self.connectMenuActions()
-
-        # Status window
+        # Opening Status window and resizing
         self.status = StatusWindow(self.state)
         self.status.ui.resize(w - 60, h - 60)
         self.status.ui.move(30, h - 150)
+
+        # connecter tous les menuAction 
+        for action in self.ui.findChildren(QtWidgets.QAction):
+            action.triggered.connect(self.open_window_from_menu_entry)
     
     def set_logger(self):
-        #level = logging.INFO
-        level = logging.DEBUG
+        level = logging.INFO
+        #level = logging.DEBUG
 
         if level <= logging.DEBUG:
             log_format = '%(levelname)s:%(threadName)s:%(name)s:%(module)s:%(funcName)s: %(message)s'
@@ -78,12 +79,7 @@ class MainWindow(GenWindow):
         self.log_file = self.rootDir + '/log/log.txt'
 
         logging.basicConfig(filename=self.log_file, level=level, format=log_format)
-        self.logger = logging.getLogger('MainWindow')
-
-    def connectMenuActions(self):
-        for elem in self.ui.menubar.findChildren(QtWidgets.QAction):
-            #if not elem.isSeparator():
-            pass
+        self.logger = logging.getLogger('main')
 
     def open_window_from_menu_entry(self):
         try:
