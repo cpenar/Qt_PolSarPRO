@@ -31,11 +31,12 @@ class MainWindow(GenWindow):
         try:
             compiled_psp_path = os.environ["COMPILED_PSP_PATH"]
         except KeyError:
-            self.logger.warning(
-                "ERROR: missing environment variable COMPILED_PSP_PATH.\n"
-                + "Necessary for Dev phase.\n"
-                + "Set COMPILED_PSP_PATH and relaunch the app, example :\n\n"
-                + "export COMPILED_PSP_PATH=/some/path/to/PolSARpro\n")
+            err_message = """ERROR: missing environment variable COMPILED_PSP_PATH.
+                Necessary for Dev phase.
+                Set COMPILED_PSP_PATH and relaunch the app, example :\n
+                export COMPILED_PSP_PATH=/some/path/to/PolSARpro"""
+            self.logger.critical(err_message)
+            print(err_message)
             sys.exit(1)
 
         # loading default config
@@ -94,6 +95,7 @@ class MainWindow(GenWindow):
             self.logger.error(pformat(e))
             if self.state['config']['log_level'] <= logging.DEBUG:
                 self.logger.exception(e)
+
 
 def start_qt_application():
     app = QtWidgets.QApplication(sys.argv)
