@@ -20,10 +20,12 @@ class MainWindow(GenWindow):
         self.ui = None
         self.logger = None
         self.status = None
+        self.log_file = None
+        self.store = {}
 
         self.guiDir = abspath(__file__)
         self.rootDir = abspath(self.guiDir + '/../../')
-        conffile = abspath(self.rootDir + '/config/genconf.txt')
+        conffile = abspath(self.rootDir + '/config/default.conf.txt')
 
         self.set_logger()
 
@@ -42,7 +44,7 @@ class MainWindow(GenWindow):
         # loading default config
         try:
             with open(conffile, 'r') as fp:
-                self.store = json.load(fp)
+                self.store['config'] = json.load(fp)
         except Exception as e:
             self.logger.exception(e)
 
@@ -68,8 +70,8 @@ class MainWindow(GenWindow):
             action.triggered.connect(self.open_window_from_menu_entry)
     
     def set_logger(self):
-        level = logging.INFO
-        #level = logging.DEBUG
+        #level = logging.INFO
+        level = logging.DEBUG
 
         if level <= logging.DEBUG:
             log_format = '%(levelname)s:%(threadName)s:%(name)s:%(module)s:%(funcName)s: %(message)s'
