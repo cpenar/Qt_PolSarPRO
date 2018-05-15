@@ -11,23 +11,34 @@ from pprint import pformat
 from PyQt5 import QtWidgets, QtCore
 
 from lib.gen_window import GenWindow
-from status_window import Window as StatusWindow
+from status_window import StatusWindow
 
 
 class MainWindow(GenWindow):
     def __init__(self):
         # Reserved attribut name
         self.ui = None
-        self.logger = None
         self.status = None
         self.log_file = None
+        self.log_level = None
         self.store = {}
 
         self.guiDir = abspath(__file__)
         self.rootDir = abspath(self.guiDir + '/../../')
+        self.log_file = self.rootDir + '/log/log.txt'
         conffile = abspath(self.rootDir + '/config/default.conf.txt')
 
+        # loading default config
+        try:
+            with open(conffile, 'r') as fp:
+                self.store['config'] = json.load(fp)
+        except Exception as e:
+            self.store['logger'].exception(e)
+
+        # Setting logger
         self.set_logger()
+
+        self.store['config']['log_file'] = self.log_file
 
         # env variable pointing to the root of a PolSARpro compiled version
         try:
@@ -37,18 +48,9 @@ class MainWindow(GenWindow):
                 Necessary for Dev phase.
                 Set COMPILED_PSP_PATH and relaunch the app, example :\n
                 export COMPILED_PSP_PATH=/some/path/to/PolSARpro"""
-            self.logger.critical(err_message)
+            self.store['logger'].critical(err_message)
             print(err_message)
             sys.exit(1)
-
-        # loading default config
-        try:
-            with open(conffile, 'r') as fp:
-                self.store['config'] = json.load(fp)
-        except Exception as e:
-            self.logger.exception(e)
-
-        self.store['config']['log_file'] = self.log_file
 
         # Initializing main window
 
@@ -70,31 +72,41 @@ class MainWindow(GenWindow):
             action.triggered.connect(self.open_window_from_menu_entry)
     
     def set_logger(self):
-        #level = logging.INFO
-        level = logging.DEBUG
+        self.log_level = self.store['config']['log_level']
+        print(self.log_level)
 
-        if level <= logging.DEBUG:
+        ### Easy changing log level for dev phase ###
+
+        self.log_level = logging.INFO
+        #self.log_level = logging.DEBUG
+
+        ### END ###
+
+        if self.log_level <= logging.DEBUG:
             log_format = '%(levelname)s:%(threadName)s:%(name)s:%(module)s:%(funcName)s: %(message)s'
         else:
             log_format = '%(levelname)s:%(message)s'
 
-        self.log_file = self.rootDir + '/log/log.txt'
 
-        logging.basicConfig(filename=self.log_file, level=level, format=log_format)
-        self.logger = logging.getLogger('main')
+        logging.basicConfig(
+                filename=self.log_file, 
+                level=self.log_level, 
+                format=log_format)
+
+        self.store['logger'] = logging.getLogger('main')
 
     def open_window_from_menu_entry(self):
         # Uniq function to dynamically manage all Qactions
         try:
             # The QAction name must be the ui file name.
             window_name = self.ui.sender().objectName()
-            self.logger.info('Opening window ' + window_name)
             ui = __import__(window_name)
             ui.Window(self.store)
         except Exception as e:
-            self.logger.error(pformat(e))
-            if self.store['config']['log_level'] <= logging.DEBUG:
-                self.logger.exception(e)
+            if self.log_level <= logging.DEBUG:
+                self.store['logger'].exception(e)
+            else:
+                self.store['logger'].error(e)
 
 
 def start_qt_application():

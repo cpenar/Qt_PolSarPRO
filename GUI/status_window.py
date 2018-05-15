@@ -6,7 +6,7 @@ from PyQt5.QtCore import QTimer
 
 from lib.gen_window import GenWindow
 
-class Window(GenWindow):
+class StatusWindow(GenWindow):
     def __init__(self, store):
         super().__init__(__name__, store)
 
@@ -21,8 +21,10 @@ class Window(GenWindow):
         # Repeatedly update status text from log file
         try:
             while self.line:
-                self.ui.logBrowser.append(self.line.rstrip())
-                print(self.line.rstrip())
+                self.line = self.line.rstrip()
+                print(self.line)
+                self.ui.logBrowser.append(self.line)
                 self.line = self.fp.readline()
         finally:
+            self.line = self.fp.readline()
             QTimer.singleShot(200, self.log2status)
