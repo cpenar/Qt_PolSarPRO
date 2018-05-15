@@ -7,8 +7,8 @@ from PyQt5.QtCore import QTimer
 from lib.gen_window import GenWindow
 
 class Window(GenWindow):
-    def __init__(self, state):
-        super().__init__(__name__, state)
+    def __init__(self, store):
+        super().__init__(__name__, store)
 
         self.log_file = self.config['log_file']
 

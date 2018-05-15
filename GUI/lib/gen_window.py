@@ -9,17 +9,17 @@ from PyQt5 import uic, QtWidgets
 
 
 class GenWindow():
-    def __init__(self, uiName, state, **kargs):
+    def __init__(self, uiName, store, **kargs):
         self.logger = logging.getLogger(uiName)
         self.logger.info('Opening window ' + uiName)
         self.logger.debug(
             'With arguments :\n' +
             '    uiName=' + uiName + '\n' +
             '    kargs=' + pformat(kargs) + '\n' +
-            '    state=' + pformat(state))
+            '    store=' + pformat(store))
 
-        self.globState = state
-        self.config = copy.deepcopy(state['config'])
+        self.globalStore = store
+        self.config = copy.deepcopy(store['config'])
 
         self.ui = QtWidgets.QDialog()
         self.ui = uic.loadUi(uiName + '.ui', self.ui)

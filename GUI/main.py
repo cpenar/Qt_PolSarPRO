@@ -42,15 +42,15 @@ class MainWindow(GenWindow):
         # loading default config
         try:
             with open(conffile, 'r') as fp:
-                self.state = json.load(fp)
+                self.store = json.load(fp)
         except Exception as e:
             self.logger.exception(e)
 
-        self.state['config']['log_file'] = self.log_file
+        self.store['config']['log_file'] = self.log_file
 
         # Initializing main window
 
-        super().__init__('main', self.state)
+        super().__init__('main', self.store)
 
         # Resizing to fit screen
         screenGeo = QtWidgets.QApplication.desktop().screenGeometry(self.ui)
@@ -59,11 +59,11 @@ class MainWindow(GenWindow):
         self.ui.move(30, 30)
 
         # Opening Status window and resizing
-        self.status = StatusWindow(self.state)
+        self.status = StatusWindow(self.store)
         self.status.ui.resize(w - 60, h - 60)
         self.status.ui.move(30, h - 150)
 
-        # connecter tous les menuAction 
+        # Connecting all menu QActions with unique callback
         for action in self.ui.findChildren(QtWidgets.QAction):
             action.triggered.connect(self.open_window_from_menu_entry)
     
@@ -82,14 +82,16 @@ class MainWindow(GenWindow):
         self.logger = logging.getLogger('main')
 
     def open_window_from_menu_entry(self):
+        # Uniq function to dynamically manage all Qactions
         try:
+            # The QAction name must be the ui file name.
             window_name = self.ui.sender().objectName()
             self.logger.info('Opening window ' + window_name)
             ui = __import__(window_name)
-            ui.Window(self.state)
+            ui.Window(self.store)
         except Exception as e:
             self.logger.error(pformat(e))
-            if self.state['config']['log_level'] <= logging.DEBUG:
+            if self.store['config']['log_level'] <= logging.DEBUG:
                 self.logger.exception(e)
 
 

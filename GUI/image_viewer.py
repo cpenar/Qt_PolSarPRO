@@ -15,9 +15,9 @@ default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_A
 
 
 class Window(GenWindow):
-    def __init__(self, state, image=None):
+    def __init__(self, store, image=None):
         self.ui = QtWidgets.QDialog()
-        super().__init__(__name__, state)
+        super().__init__(__name__, store)
 
         # Reserved attribute names
         self.zoomRatio = None
