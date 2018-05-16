@@ -27,4 +27,4 @@ class StatusWindow(GenericWindow):
                 self.line = self.fp.readline()
         finally:
             self.line = self.fp.readline()
-            QTimer.singleShot(200, self.log2status)
+            QTimer.singleShot(100, self.log2status)
