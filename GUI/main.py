@@ -10,11 +10,11 @@ from pprint import pformat
 
 from PyQt5 import QtWidgets, QtCore
 
-from lib.gen_window import GenWindow
+from lib.gen_window import GenericWindow
 from status_window import StatusWindow
 
 
-class MainWindow(GenWindow):
+class MainWindow(GenericWindow):
     def __init__(self):
         # Reserved attribut name
         self.ui = None
@@ -77,8 +77,8 @@ class MainWindow(GenWindow):
 
         ### Easy changing log level for dev phase ###
 
-        self.log_level = logging.INFO
-        #self.log_level = logging.DEBUG
+        #self.log_level = logging.INFO
+        self.log_level = logging.DEBUG
 
         ### END ###
 

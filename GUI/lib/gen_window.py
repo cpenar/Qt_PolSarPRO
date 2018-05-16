@@ -5,22 +5,41 @@ import copy
 import logging
 from pprint import pformat
 
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtCore
 
 
-class GenWindow():
-    def __init__(self, uiName, store, **kargs):
-        self.logger = logging.getLogger(uiName)
-        self.logger.info('Opening window ' + uiName)
-        self.logger.debug(
-            'With arguments :\n' +
-            '    uiName=' + uiName + '\n' +
-            '    kargs=' + pformat(kargs) + '\n' +
-            '    store=' + pformat(store))
+class GenericWindow():
+    def __init__(self, uiName, store, *args, **kwargs):
+        self.uiName = uiName
 
         self.globalStore = store
-        self.config = copy.deepcopy(store['config'])
+        self.localconfig = copy.deepcopy(store['config'])
+
+        self.initLogging(args, kwargs)
 
         self.ui = QtWidgets.QDialog()
         self.ui = uic.loadUi(uiName + '.ui', self.ui)
+
+        # suppress Escape key closing event for Dialog window
+        self.ui.savedKeyPressEvent = self.ui.keyPressEvent
+        self.ui.keyPressEvent = self.dontCloseWithEscapeKey
+
+        self.ui.closeEvent = self.closeEvent
         self.ui.show()
+
+    def initLogging(self, args, kwargs):
+        self.logger = logging.getLogger(self.uiName)
+        self.logger.info('Opening window ' + self.uiName)
+        self.logger.debug(
+            'With arguments :\n' +
+            '    uiName=' + self.uiName + '\n' +
+            '    *args =' + pformat(args) + '\n' +
+            '    **kwargs=' + pformat(kwargs) + '\n' +
+            '    config=' + '\n' + pformat(self.localconfig))
+
+    def closeEvent(self, event):
+        self.logger.info('Closing window ' + self.uiName )
+
+    def dontCloseWithEscapeKey(self, event):
+        if event.key() != QtCore.Qt.Key_Escape:
+            self.ui.savedKeyPressEvent(event)

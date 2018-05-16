@@ -7,7 +7,7 @@ from logging import error, warning, info
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
-from lib.gen_window import GenWindow
+from lib.gen_window import GenericWindow
 from lib.callback_manager import cbManager
 
 # variable for dev phase
@@ -15,7 +15,7 @@ default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_A
 #default_image_path = '/tmp/huge.bmp'
 
 
-class Window(GenWindow):
+class Window(GenericWindow):
     def __init__(self, store, image=None):
         self.ui = QtWidgets.QDialog()
         super().__init__(__name__, store)
@@ -153,7 +153,7 @@ class Window(GenWindow):
             error('Create polygon selection first')
             return
 
-        training_file_path = self.config['tempDir'] + '/training.json'
+        training_file_path = self.localconfig['tempDir'] + '/training.json'
         info('Saving polygon selections in ' + training_file_path)
         with open(training_file_path, 'w') as fp:
             json.dump(classes, fp, indent=4, separators=(',', 'g '))
