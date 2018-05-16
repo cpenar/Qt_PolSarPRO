@@ -10,6 +10,7 @@ from PyQt5.QtCore import Qt
 from lib.gen_window import GenWindow
 from lib.callback_manager import cbManager
 
+# variable for dev phase
 default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp'
 #default_image_path = '/tmp/huge.bmp'
 
