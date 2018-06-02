@@ -42,4 +42,4 @@ fi
 
 echo Starting py_launcher
 
-cd GUI && $PYTHON_CMD py_launcher.py
+cd GUI && $PYTHON_CMD py_GUI_launcher.py
