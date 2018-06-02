@@ -38,7 +38,7 @@ class GenericWindow():
             '    config=' + '\n' + pformat(self.localconfig))
 
     def closeEvent(self, event):
-        self.logger.info('Closing window ' + self.uiName )
+        self.logger.info('Closing window ' + self.uiName)
 
     def dontCloseWithEscapeKey(self, event):
         if event.key() != QtCore.Qt.Key_Escape:

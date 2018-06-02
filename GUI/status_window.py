@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- codding: utf-8 -*-
 
-from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer
 
 from lib.gen_window import GenericWindow
+
 
 class StatusWindow(GenericWindow):
     def __init__(self, store):

@@ -2,7 +2,6 @@
 # -*- codding: utf-8 -*-
 
 import os
-import sys
 
 from datetime import datetime
 
@@ -19,10 +18,12 @@ def rotate_log():
 
     for i in range(max_log_files - 1, 0, -1):
         if os.path.exists(log_file_name + "." + str(i)):
-            os.rename(log_file_name + "." + str(i), log_file_name + "." + str(i + 1))
+            os.rename(log_file_name + "." + str(i), log_file_name + "."
+                      + str(i + 1))
 
     if os.path.exists(log_file_name):
         os.rename(log_file_name, log_file_name + ".1")
+
 
 def log_platform_information():
     import platform
@@ -37,10 +38,12 @@ def log_platform_information():
         f.write("system win32: " + str(platform.win32_ver()) + "\n")
         f.write("uname: " + str(platform.uname()) + "\n")
         f.write("python version: " + str(platform.python_version()) + "\n")
-        f.write("python implementation: " + str(platform.python_implementation()) + "\n")
+        f.write("python implementation: "
+                + str(platform.python_implementation()) + "\n")
         f.write("python revision: " + str(platform.python_revision()) + "\n")
         f.write("python compiler: " + str(platform.python_compiler()) + "\n")
         f.write("### end platform informations ###\n")
+
 
 if __name__ == '__main__':
     from main import start_qt_application

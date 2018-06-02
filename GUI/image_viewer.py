@@ -11,8 +11,9 @@ from lib.gen_window import GenericWindow
 from lib.callback_manager import cbManager
 
 # variable for dev phase
-default_image_path = '/home/cpenar/work/PolSARpro/doc_n_data_set/SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp'
-#default_image_path = '/tmp/huge.bmp'
+default_image_path = ('/home/cpenar/work/PolSARpro/doc_n_data_set/'
+                      'SAN_FRANCISCO_ALOS/T3/PauliRGB.bmp')
+# default_image_path = '/tmp/huge.bmp'
 
 
 class Window(GenericWindow):
@@ -41,7 +42,7 @@ class Window(GenericWindow):
         if image is None:
             try:
                 self.image = QtGui.QImage(default_image_path)
-            except:
+            except Exception:
                 error("Couldn't load " + default_image_path)
         else:
             self.image = image
@@ -80,7 +81,7 @@ class Window(GenericWindow):
         self.ui.actionFlip_Horizontally.triggered.connect(
             self.flipHorizontally)
 
-        ### QEvent management ###
+        # # QEvent management # #
 
         # suppress Escape key closing event for Dialog window
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent

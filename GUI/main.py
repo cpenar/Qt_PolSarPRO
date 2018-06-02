@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- codding: utf-8 -*-
 
-import os
 import sys
+import os
 import logging
 import json
-from os.path import abspath
-from pprint import pformat
 
-from PyQt5 import QtWidgets, QtCore
+from os.path import abspath
+
+from PyQt5 import QtWidgets
 
 from lib.gen_window import GenericWindow
 from status_window import StatusWindow
@@ -42,7 +42,7 @@ class MainWindow(GenericWindow):
 
         # env variable pointing to the root of a PolSARpro compiled version
         try:
-            compiled_psp_path = os.environ["COMPILED_PSP_PATH"]
+            os.environ["COMPILED_PSP_PATH"]
         except KeyError:
             err_message = """ERROR: missing environment variable COMPILED_PSP_PATH.
                 Necessary for Dev phase.
@@ -70,27 +70,28 @@ class MainWindow(GenericWindow):
         # Connecting all menu QActions with unique callback
         for action in self.ui.findChildren(QtWidgets.QAction):
             action.triggered.connect(self.open_window_from_menu_entry)
-    
+
     def set_logger(self):
         self.log_level = self.store['config']['log_level']
 
-        ### Dirty trick for easily
-        ### Easy changing log level during dev phase ###
-        ### TODO: remove it
+        # # Dirty trick for easily
+        # # Easy changing log level during dev phase ###
+        # # TODO: remove it
 
-        #self.log_level = logging.INFO
-        self.log_level = logging.DEBUG
+        self.log_level = logging.INFO
+        # self.log_level = logging.DEBUG
 
-        ### END ###
+        # # END # #
 
         if self.log_level <= logging.DEBUG:
-            log_format = '%(levelname)s:%(threadName)s:%(name)s:%(module)s:%(funcName)s: %(message)s'
+            log_format = ('%(levelname)s:%(threadName)s:%(name)s:%(module)s:'
+                          '%(funcName)s: %(message)s')
         else:
             log_format = '%(levelname)s:%(message)s'
 
         logging.basicConfig(
-                filename=self.log_file, 
-                level=self.log_level, 
+                filename=self.log_file,
+                level=self.log_level,
                 format=log_format)
 
         self.store['logger'] = logging.getLogger('main')
@@ -111,7 +112,7 @@ class MainWindow(GenericWindow):
 
 def start_qt_application():
     app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
+    MainWindow()
     sys.exit(app.exec_())
 
 
