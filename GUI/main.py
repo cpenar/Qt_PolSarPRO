@@ -73,12 +73,13 @@ class MainWindow(GenericWindow):
     
     def set_logger(self):
         self.log_level = self.store['config']['log_level']
-        print(self.log_level)
 
-        ### Easy changing log level for dev phase ###
+        ### Dirty trick for easily
+        ### Easy changing log level during dev phase ###
+        ### TODO: remove it
 
-        self.log_level = logging.INFO
-        #self.log_level = logging.DEBUG
+        #self.log_level = logging.INFO
+        self.log_level = logging.DEBUG
 
         ### END ###
 
@@ -86,7 +87,6 @@ class MainWindow(GenericWindow):
             log_format = '%(levelname)s:%(threadName)s:%(name)s:%(module)s:%(funcName)s: %(message)s'
         else:
             log_format = '%(levelname)s:%(message)s'
-
 
         logging.basicConfig(
                 filename=self.log_file, 
