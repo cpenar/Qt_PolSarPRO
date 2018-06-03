@@ -31,10 +31,22 @@ class Window(GenericWindow):
 
         self.currentpoly = []
         self.qcolors = (
-            'black', 'blue', 'red', 'cyan',
-            'darkBlue', 'darkGray', 'darkGreen',
-            'darkMagenta', 'darkRed', 'darkYellow', 'gray',
-            'green', 'lightGray', 'magenta',   'yellow')
+            'black',
+            'blue',
+            'red',
+            'cyan',
+            'darkBlue',
+            'darkGray',
+            'darkGreen',
+            'darkMagenta',
+            'darkRed',
+            'darkYellow',
+            'gray',
+            'green',
+            'lightGray',
+            'magenta',
+            'yellow'
+        )
 
         self.color = 0
 
