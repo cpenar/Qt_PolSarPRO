@@ -22,7 +22,7 @@ class GenericWindow():
 
         # suppress Escape key closing event for Dialog window
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent
-        self.ui.keyPressEvent = self.dontCloseWithEscapeKey
+        # self.ui.keyPressEvent = self.dontCloseWithEscapeKey
 
         self.ui.closeEvent = self.closeEvent
         self.ui.show()
