@@ -90,9 +90,9 @@ class MainWindow(GenericWindow):
             log_format = '%(levelname)s:%(message)s'
 
         logging.basicConfig(
-                filename=self.log_file,
-                level=self.log_level,
-                format=log_format)
+            filename=self.log_file,
+            level=self.log_level,
+            format=log_format)
 
         self.store['logger'] = logging.getLogger('main')
 
