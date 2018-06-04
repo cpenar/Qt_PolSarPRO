@@ -3,6 +3,8 @@
 
 import copy
 import logging
+import json
+
 from pprint import pformat
 
 from PyQt5 import uic, QtWidgets, QtCore
@@ -10,6 +12,8 @@ from PyQt5 import uic, QtWidgets, QtCore
 
 class GenericWindow():
     def __init__(self, uiName, store, *args, **kwargs):
+        self.logger = None
+        self.ui = None
         self.uiName = uiName
 
         self.globalStore = store
@@ -20,7 +24,7 @@ class GenericWindow():
         self.ui = QtWidgets.QDialog()
         self.ui = uic.loadUi(uiName + '.ui', self.ui)
 
-        # suppress Escape key closing event for Dialog window
+        # TODO: suppress Escape key closing event for Dialog window
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent
         # self.ui.keyPressEvent = self.dontCloseWithEscapeKey
 
@@ -38,8 +42,24 @@ class GenericWindow():
             '    config=' + '\n' + pformat(self.localconfig))
 
     def closeEvent(self, event):
+        # TODO: verify that localconfig doesnt differ with global Config
+        # before closing
         self.logger.info('Closing window ' + self.uiName)
 
     def dontCloseWithEscapeKey(self, event):
         if event.key() != QtCore.Qt.Key_Escape:
             self.ui.savedKeyPressEvent(event)
+
+    def saveAndExit(self):
+        self.logger.info('Saving configuration')
+        try:
+            self.globalStore['config'].update(self.localconfig)
+            # TODO: dont save to file every time,
+            # only when closing PSP
+            conffile = self.localconfig['rootDir'] + '/config/default.conf.txt'
+            with open(conffile, 'w') as f:
+                json.dump(self.localconfig, f, indent=4)
+        except Exception as e:
+            self.logger.error('Error when saving configuration')
+            self.logger.debug(e)
+        self.ui.close()

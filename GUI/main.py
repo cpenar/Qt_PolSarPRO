@@ -77,7 +77,6 @@ class MainWindow(GenericWindow):
         # # Dirty trick for easily
         # # Easy changing log level during dev phase ###
         # # TODO: remove it
-
         self.log_level = logging.INFO
         # self.log_level = logging.DEBUG
 

@@ -12,6 +12,13 @@ class Window(GenericWindow):
         self.ui.pushButton_MainInputDir.clicked.connect(self.openFileDialog)
         self.ui.pushButton_SaveAndExit.clicked.connect(self.saveAndExit)
 
+        if self.localconfig['inputDir']:
+            self.ui.pushButton_MainInputDir.setText(
+                    self.localconfig['inputDir'])
+        else:
+            self.ui.pushButton_MainInputDir.setText(
+                    self.localconfig['rootDir'])
+
     def openFileDialog(self):
         try:
             chosenDirPath = QFileDialog.getExistingDirectory()
@@ -20,7 +27,3 @@ class Window(GenericWindow):
         except Exception as e:
             self.logger.error('Error getting directory')
             self.logger.debug(e)
-
-    def saveAndExit(self):
-        self.globalStore['config'].update(self.localconfig)
-        self.ui.close()
