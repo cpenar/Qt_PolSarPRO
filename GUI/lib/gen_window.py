@@ -9,6 +9,8 @@ from pprint import pformat
 
 from PyQt5 import uic, QtWidgets, QtCore
 
+# from confirm_window import ConfirmWindow
+
 
 class GenericWindow():
     def __init__(self, uiName, store, *args, **kwargs):
@@ -26,7 +28,7 @@ class GenericWindow():
 
         # TODO: suppress Escape key closing event for Dialog window
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent
-        # self.ui.keyPressEvent = self.dontCloseWithEscapeKey
+        self.ui.keyPressEvent = self.cleanCloseWithEscapeKey
 
         self.ui.closeEvent = self.closeEvent
         self.ui.show()
@@ -42,13 +44,19 @@ class GenericWindow():
             '    config=' + '\n' + pformat(self.localconfig))
 
     def closeEvent(self, event):
-        # TODO: verify that localconfig doesnt differ with global Config
-        # before closing
-        self.logger.info('Closing window ' + self.uiName)
+        self.logger.info('Asked for closing')
+        if self.localconfig != self.globalStore['config']:
+            event.ignore()
+            # ConfirmWindow()
+        else:
+            self.logger.info('Closing window ' + self.uiName)
+            event.accept()
 
-    def dontCloseWithEscapeKey(self, event):
+    def cleanCloseWithEscapeKey(self, event):
         if event.key() != QtCore.Qt.Key_Escape:
             self.ui.savedKeyPressEvent(event)
+        else:
+            self.ui.close()
 
     def saveAndExit(self):
         self.logger.info('Saving configuration')

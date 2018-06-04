@@ -108,6 +108,9 @@ class MainWindow(GenericWindow):
             else:
                 self.store['logger'].error(e)
 
+    def closeEvent(self, event):
+        self.status.closeFromMain()
+
 
 def start_qt_application():
     app = QtWidgets.QApplication(sys.argv)

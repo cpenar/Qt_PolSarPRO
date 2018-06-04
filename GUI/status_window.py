@@ -22,9 +22,20 @@ class StatusWindow(GenericWindow):
         try:
             while self.line:
                 self.line = self.line.rstrip()
+                # printing in case of terminal launch
                 print(self.line)
                 self.ui.logBrowser.append(self.line)
                 self.line = self.fp.readline()
         finally:
             self.line = self.fp.readline()
             QTimer.singleShot(100, self.log2status)
+
+    def closeEvent(self, event):
+        event.ignore()
+
+    def acceptCloseEvent(self, event):
+        event.accept()
+
+    def closeFromMain(self):
+        self.ui.closeEvent = self.acceptCloseEvent
+        self.ui.close()
