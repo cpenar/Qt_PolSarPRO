@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
 from lib.store_window import StoreWindow
-from lib.callback_manager import cbManager
+from callback_manager import cbManager
 
 # variable for dev phase
 default_image_path = ('/home/cpenar/work/PolSARpro/doc_n_data_set/'
@@ -332,8 +332,8 @@ class ImageScene(QtWidgets.QGraphicsScene):
     def __init__(self, parent=None):
         super(ImageScene, self).__init__(parent)
 
-    def mouseMoveEvent(self, *args, **kargs):
-        return QtWidgets.QGraphicsScene.mouseMoveEvent(self, *args, **kargs)
+    def mouseMoveEvent(self, *args, **kwargs):
+        return QtWidgets.QGraphicsScene.mouseMoveEvent(self, *args, **kwargs)
 
-    def mousePressEvent(self, *args, **kargs):
-        return QtWidgets.QGraphicsScene.mousePressEvent(self, *args, **kargs)
+    def mousePressEvent(self, *args, **kwargs):
+        return QtWidgets.QGraphicsScene.mousePressEvent(self, *args, **kwargs)

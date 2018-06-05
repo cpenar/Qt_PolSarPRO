@@ -55,6 +55,7 @@ class MainWindow(BasicWindow):
         # Initializing main window
 
         super().__init__('main', self.store)
+        self.ui.closeEvent = self.closeEvent
 
         # Resizing to fit screen
         screenGeo = QtWidgets.QApplication.desktop().screenGeometry(self.ui)
@@ -102,7 +103,7 @@ class MainWindow(BasicWindow):
             # The QAction name must be the ui file name.
             window_name = self.ui.sender().objectName()
             ui = __import__(window_name)
-            ui.Window(self.store)
+            ui.Window(self.store, parent=self)
         except Exception as e:
             if self.log_level <= logging.DEBUG:
                 self.store['logger'].exception(e)

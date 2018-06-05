@@ -17,6 +17,8 @@ class StatusWindow(BasicWindow):
         self.line = ' '
         self.log2status()
 
+        self.ui.closeEvent = self.ignoreCloseEvent
+
     def log2status(self):
         # Repeatedly update status text from log file
         try:
@@ -30,7 +32,7 @@ class StatusWindow(BasicWindow):
             self.line = self.fp.readline()
             QTimer.singleShot(100, self.log2status)
 
-    def closeEvent(self, event):
+    def ignoreCloseEvent(self, event):
         event.ignore()
 
     def acceptCloseEvent(self, event):

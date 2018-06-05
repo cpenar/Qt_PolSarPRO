@@ -27,7 +27,6 @@ class BasicWindow():
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent
         self.ui.keyPressEvent = self.cleanCloseWithEscapeKey
 
-        self.ui.closeEvent = self.closeEvent
         self.ui.show()
 
     def initLogging(self, args, kwargs):
@@ -35,9 +34,9 @@ class BasicWindow():
         self.logger.info('Opening window ' + self.uiName)
         self.logger.debug(
             'With arguments :\n' +
-            '    uiName=' + self.uiName + '\n' +
-            '    *args =' + pformat(args) + '\n' +
-            '    **kwargs=' + pformat(kwargs) + '\n')
+            '    uiName=' + self.uiName + '\n\n' +
+            '    *args =\n' + pformat(args) + '\n\n' +
+            '    **kwargs=\n' + pformat(kwargs) + '\n\n')
 
     def cleanCloseWithEscapeKey(self, event):
         if event.key() != QtCore.Qt.Key_Escape:

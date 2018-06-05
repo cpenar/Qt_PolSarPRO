@@ -77,10 +77,10 @@ class _CbManager():
 
         return self.originalFunc
 
-    def _calls(self, *args, **kargs):
+    def _calls(self, *args, **kwargs):
         # copy() to avoid error:
         # RuntimeError: Set changed size during iteration
         for cb in self.callbacks.copy():
-            cb(*args, **kargs)
+            cb(*args, **kwargs)
         if self._activatedOriginalFunction:
-            return self.savedfunc(*args, **kargs)
+            return self.savedfunc(*args, **kwargs)

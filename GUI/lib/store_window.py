@@ -3,12 +3,9 @@
 
 import copy
 import json
-from pprint import pformat
-
-from PyQt5 import QtCore
 
 from lib.basic_window import BasicWindow
-from lib.confirm_window import ConfirmWindow
+from confirm_window import ConfirmWindow
 
 
 class StoreWindow(BasicWindow):
@@ -17,19 +14,17 @@ class StoreWindow(BasicWindow):
     Manage closing events to ask confirmation when there are
     unsaved changes.
     """
-    def __init__(self, uiName, store):
-        super().__init__(__name__, store)
-
+    def __init__(self, uiName, store, *args, **kwargs):
+        super().__init__(uiName, store, *args, **kwargs)
         self.globalStore = store
         self.localconfig = copy.deepcopy(store['config'])
-
-        self.logger.debug('    config=' + '\n' + pformat(self.localconfig))
+        self.ui.closeEvent = self.closeEvent
 
     def closeEvent(self, event):
         self.logger.info('Asked for closing')
         if self.localconfig != self.globalStore['config']:
             event.ignore()
-            ConfirmWindow()
+            ConfirmWindow(parent=self)
         else:
             self.logger.info('Closing window ' + self.uiName)
             event.accept()
@@ -47,3 +42,6 @@ class StoreWindow(BasicWindow):
             self.logger.error('Error when saving configuration')
             self.logger.debug(e)
         self.ui.close()
+
+    def forceClose(self, event):
+        event.accept()
