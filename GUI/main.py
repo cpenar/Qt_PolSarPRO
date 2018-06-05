@@ -9,6 +9,8 @@ import json
 from os.path import abspath
 
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QPoint
 
 from lib.basic_window import BasicWindow
 from status_window import StatusWindow
@@ -58,15 +60,17 @@ class MainWindow(BasicWindow):
         self.ui.closeEvent = self.closeEvent
 
         # Resizing to fit screen
-        screenGeo = QtWidgets.QApplication.desktop().screenGeometry(self.ui)
+        desktop = QApplication.desktop()
+        screen = desktop.screenNumber(desktop.cursor().pos())
+        screenGeo = desktop.screenGeometry(screen)
         w, h = screenGeo.width(), screenGeo.height()
         self.ui.resize(w - 60, h - 60)
-        self.ui.move(30, 30)
+        self.ui.move(screenGeo.topLeft() + QPoint(20, 20))
 
         # Opening Status window and resizing
         self.status = StatusWindow(self.store)
         self.status.ui.resize(w - 60, h - 60)
-        self.status.ui.move(30, h - 150)
+        self.status.ui.move(screenGeo.bottomLeft() + QPoint(20, -150))
 
         # Connecting all menu QActions with unique callback
         for action in self.ui.findChildren(QtWidgets.QAction):
