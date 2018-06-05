@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- codding: utf-8 -*-
 
-from lib.gen_window import GenericWindow
+from lib.basic_window import BasicWindow
 
 
-class ConfirmWindow(GenericWindow):
+class ConfirmWindow(BasicWindow):
     def __init__(self, store, closeEvent):
-        super().__init__(__name__, store)
+        super().__init__('confirm_window', store)
         self.parentCloseEvent = closeEvent
 
         # Connecting buttons

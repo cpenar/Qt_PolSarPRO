@@ -3,14 +3,14 @@
 
 from PyQt5.QtCore import QTimer
 
-from lib.gen_window import GenericWindow
+from lib.basic_window import BasicWindow
 
 
-class StatusWindow(GenericWindow):
+class StatusWindow(BasicWindow):
     def __init__(self, store):
         super().__init__(__name__, store)
 
-        self.log_file = self.localconfig['log_file']
+        self.log_file = store['config']['log_file']
 
         self.fp = open(self.log_file, 'r')
 

@@ -10,11 +10,11 @@ from os.path import abspath
 
 from PyQt5 import QtWidgets
 
-from lib.gen_window import GenericWindow
+from lib.basic_window import BasicWindow
 from status_window import StatusWindow
 
 
-class MainWindow(GenericWindow):
+class MainWindow(BasicWindow):
     def __init__(self):
         # Reserved attribut name
         self.ui = None
@@ -77,8 +77,9 @@ class MainWindow(GenericWindow):
         # # Dirty trick for easily
         # # Easy changing log level during dev phase ###
         # # TODO: remove it
-        self.log_level = logging.INFO
-        # self.log_level = logging.DEBUG
+
+        # self.log_level = logging.INFO
+        self.log_level = logging.DEBUG
 
         # # END # #
 

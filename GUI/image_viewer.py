@@ -7,7 +7,7 @@ from logging import error, warning, info
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 
-from lib.gen_window import GenericWindow
+from lib.store_window import StoreWindow
 from lib.callback_manager import cbManager
 
 # variable for dev phase
@@ -16,7 +16,7 @@ default_image_path = ('/home/cpenar/work/PolSARpro/doc_n_data_set/'
 # default_image_path = '/tmp/huge.bmp'
 
 
-class Window(GenericWindow):
+class Window(StoreWindow):
     def __init__(self, store, image=None):
         self.ui = QtWidgets.QDialog()
         super().__init__(__name__, store)
