@@ -9,22 +9,24 @@ from lib.store_window import StoreWindow
 class Window(StoreWindow):
     def __init__(self, store, **kwargs):
         super().__init__(__name__, store, **kwargs)
-        print('single : ', self.ui.window())
-        self.ui.pushButton_MainInputDir.clicked.connect(self.openFileDialog)
+
         self.ui.pushButton_SaveAndExit.clicked.connect(self.saveAndExit)
+        self.ui.pushButton_MainInputDir.clicked.connect(self.openFileDialog)
 
         if self.localconfig['inputDir']:
-            self.ui.pushButton_MainInputDir.setText(
-                    self.localconfig['inputDir'])
+            self.startDir = self.localconfig['inputDir']
         else:
-            self.ui.pushButton_MainInputDir.setText(
-                    self.localconfig['rootDir'])
+            self.startDir = self.localconfig['rootDir']
+
+        self.ui.pushButton_MainInputDir.setText(self.startDir)
 
     def openFileDialog(self):
         try:
-            chosenDirPath = QFileDialog.getExistingDirectory()
-            self.localconfig['inputDir'] = chosenDirPath
-            self.ui.pushButton_MainInputDir.setText(chosenDirPath)
+            chosenDirPath = QFileDialog.getExistingDirectory(
+                directory=self.startDir)
+            if chosenDirPath:
+                self.localconfig['inputDir'] = chosenDirPath
+                self.ui.pushButton_MainInputDir.setText(chosenDirPath)
         except Exception as e:
             self.logger.error('Error getting directory')
             self.logger.debug(e)

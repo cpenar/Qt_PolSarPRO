@@ -18,10 +18,10 @@ class StoreWindow(BasicWindow):
         super().__init__(uiName, store, *args, **kwargs)
         self.globalStore = store
         self.localconfig = copy.deepcopy(store['config'])
+        self.ui.saveClosedEvent = self.ui.closeEvent
         self.ui.closeEvent = self.closeEvent
 
     def closeEvent(self, event):
-        self.logger.info('Asked for closing')
         if self.localconfig != self.globalStore['config']:
             event.ignore()
             ConfirmWindow(parent=self)
@@ -43,5 +43,6 @@ class StoreWindow(BasicWindow):
             self.logger.debug(e)
         self.ui.close()
 
-    def forceClose(self, event):
-        event.accept()
+    def forceClose(self):
+        self.ui.closeEvent = self.ui.saveClosedEvent
+        self.ui.close()

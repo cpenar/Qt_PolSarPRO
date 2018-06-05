@@ -6,7 +6,7 @@
         "columns": 934,
         "rows": 934
     },
-    "inputDir": "/home/cpenar/work/PolSARpro/Qt_PolSarPRO/GUI/lib",
+    "inputDir": "/home/cpenar/work",
     "inputMasterDir": "/home/cpenar/work/PolSARpro/Qt_PolSarPRO",
     "inputSlaveDir": "/home/cpenar/work/PolSARpro/Qt_PolSarPRO",
     "localDir": "/home/cpenar/work/PolSARpro/Qt_PolSarPRO/GUI/main.py",

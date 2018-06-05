@@ -57,7 +57,7 @@
       <string notr="true">Text-align:left</string>
      </property>
      <property name="text">
-      <string>PushButtonPushButtonPushButton</string>
+      <string>Should be some dir here</string>
      </property>
      <property name="icon">
       <iconset>

@@ -10,11 +10,6 @@ class ConfirmWindow(BasicWindow):
 
         super().__init__('confirm_window')
 
-        # Saving QCloseEvent for later use
-        self.savedCloseEvent = self.ui.closeEvent
-        # Replace closeEvent to ignore QCloseEvent at start
-        self.ui.closeEvent = self.cancel
-
         # Connecting buttons
         self.ui.pushButton_SaveAndExit.clicked.connect(
             self.saveAndExit)
@@ -24,13 +19,12 @@ class ConfirmWindow(BasicWindow):
             self.cancel)
 
     def saveAndExit(self):
-        pass
+        self.ui.close()
+        self.parent.saveAndExit()
 
     def exitNoSave(self):
-        self.parent.closeEvent = self.parent.forceClose
-        # Restoring normal close event
-        self.ui.closeEvent = self.savedCloseEvent
+        self.parent.forceClose()
         self.ui.close()
 
-    def cancel(self):
-        pass
+    def cancel(self, event):
+        self.ui.close()

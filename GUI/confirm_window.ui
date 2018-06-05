@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
-    <height>232</height>
+    <width>373</width>
+    <height>273</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -23,7 +23,7 @@
    <string>Confirm</string>
   </property>
   <property name="modal">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -90,7 +90,7 @@
       <set>Qt::ImhNone</set>
      </property>
      <property name="text">
-      <string>You have unsaved changes, confirm that you want to close this window without saving your changes, or Save and close, or Cancel and return to previous window.</string>
+      <string>You have unsaved changes, do u want to save them before closing ?</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
@@ -119,13 +119,13 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_ExitNoSave">
+      <widget class="QPushButton" name="pushButton_SaveAndExit">
        <property name="text">
-        <string>Exit without saving</string>
+        <string>Save before closing</string>
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../Images/flaticon/svg/015-warning.svg</normaloff>../Images/flaticon/svg/015-warning.svg</iconset>
+         <normaloff>../Images/flaticon/svg/002-checked-1.svg</normaloff>../Images/flaticon/svg/002-checked-1.svg</iconset>
        </property>
       </widget>
      </item>
@@ -143,13 +143,13 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_SaveAndExit">
+      <widget class="QPushButton" name="pushButton_ExitNoSave">
        <property name="text">
-        <string>Save before closing</string>
+        <string>Exit without saving</string>
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../Images/flaticon/svg/002-checked-1.svg</normaloff>../Images/flaticon/svg/002-checked-1.svg</iconset>
+         <normaloff>../Images/flaticon/svg/015-warning.svg</normaloff>../Images/flaticon/svg/015-warning.svg</iconset>
        </property>
       </widget>
      </item>
