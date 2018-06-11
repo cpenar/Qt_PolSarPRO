@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-# -*- codding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import sys
 import os
 import logging
 import json
-
 from os.path import abspath
 
 from PyQt5 import QtWidgets
@@ -28,13 +27,15 @@ class MainWindow(BasicWindow):
         self.guiDir = abspath(__file__)
         self.rootDir = abspath(self.guiDir + '/../../')
         self.log_file = self.rootDir + '/log/log.txt'
-        conffile = abspath(self.rootDir + '/config/default.conf.txt')
+        conffile = abspath(self.rootDir + '/config/config.txt')
 
-        # loading default config
+        # Initialize Store
         try:
             with open(conffile, 'r') as fp:
                 self.store['config'] = json.load(fp)
         except Exception as e:
+            # TODO : This is wrong, cant use logger here !!
+            # still unset
             self.store['logger'].exception(e)
 
         # Setting logger
@@ -44,15 +45,19 @@ class MainWindow(BasicWindow):
 
         # env variable pointing to the root of a PolSARpro compiled version
         try:
-            os.environ["COMPILED_PSP_PATH"]
+            self.store['config']['compiled_psp_path'] = os.environ['COMPILED_PSP_PATH']
         except KeyError:
             err_message = """ERROR: missing environment variable COMPILED_PSP_PATH.
-                Necessary for Dev phase.
+                Necessary for development phase.
                 Set COMPILED_PSP_PATH and relaunch the app, example :\n
                 export COMPILED_PSP_PATH=/some/path/to/PolSARpro"""
             self.store['logger'].critical(err_message)
             print(err_message)
             sys.exit(1)
+
+        # Initializing config variable if they are not
+        if self.store['config']['tempDir'] == '':
+            self.store['config']['tempDir'] = self.store['rootDir'] + '/tmp'
 
         # Initializing main window
 
@@ -80,11 +85,11 @@ class MainWindow(BasicWindow):
         self.log_level = self.store['config']['log_level']
 
         # # Dirty trick for easily
-        # # Easy changing log level during dev phase ###
+        # # changing log level during dev phase
         # # TODO: remove it
 
         self.log_level = logging.INFO
-        self.log_level = logging.DEBUG
+        #self.log_level = logging.DEBUG
 
         # # END # #
 
@@ -100,11 +105,13 @@ class MainWindow(BasicWindow):
             format=log_format)
 
         self.store['logger'] = logging.getLogger('main')
+        # Shortcut for logger
+        self.logger = self.store['logger']
 
     def open_window_from_menu_entry(self):
-        # Uniq function to dynamically manage all Qactions
+        # Unique function to dynamically manage all Qactions
         try:
-            # The QAction name must be the ui file name.
+            # The QAction name MUST be the exact ui file name targeted
             window_name = self.ui.sender().objectName()
             ui = __import__(window_name)
             ui.Window(self.store, parent=self)

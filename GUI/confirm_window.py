@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- codding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from lib.basic_window import BasicWindow
 
@@ -23,8 +23,8 @@ class ConfirmWindow(BasicWindow):
         self.parent.saveAndExit()
 
     def exitNoSave(self):
-        self.parent.forceClose()
         self.ui.close()
+        self.parent.forceClose()
 
     def cancel(self, event):
         self.ui.close()

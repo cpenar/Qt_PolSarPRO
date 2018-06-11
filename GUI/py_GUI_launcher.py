@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-# -*- codding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
-
+import platform
 from datetime import datetime
+
+from main import start_qt_application
 
 max_log_files = 20
 log_rep = "../log/"
@@ -26,7 +28,6 @@ def rotate_log():
 
 
 def log_platform_information():
-    import platform
     with open(log_file_name, "a") as f:
         f.write("\n### Platform informations ###\n")
         f.write("machine: " + str(platform.machine()) + "\n")
@@ -46,7 +47,7 @@ def log_platform_information():
 
 
 if __name__ == '__main__':
-    from main import start_qt_application
+    # Creating log directory if it doesnt exist
     if not os.path.exists(log_rep):
         os.mkdir(log_rep)
     else:

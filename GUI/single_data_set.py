@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- codding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from PyQt5.QtWidgets import QFileDialog
 
@@ -29,4 +29,4 @@ class Window(StoreWindow):
                 self.ui.pushButton_MainInputDir.setText(chosenDirPath)
         except Exception as e:
             self.logger.error('Error getting directory')
-            self.logger.debug(e)
+            self.logger.debug(e, exc_info=True)
