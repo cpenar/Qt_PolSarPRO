@@ -27,7 +27,7 @@ class MainWindow(BasicWindow):
         self.guiDir = abspath(__file__)
         self.rootDir = abspath(self.guiDir + '/../../')
         self.log_file = self.rootDir + '/log/log.txt'
-        conffile = abspath(self.rootDir + '/config/default.conf.txt')
+        conffile = abspath(self.rootDir + '/config/config.txt')
 
         # loading default config
         try:
