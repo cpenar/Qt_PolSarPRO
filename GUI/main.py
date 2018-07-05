@@ -5,7 +5,6 @@ import sys
 import os
 import logging
 import json
-
 from os.path import abspath
 
 from PyQt5 import QtWidgets
@@ -47,7 +46,7 @@ class MainWindow(BasicWindow):
             os.environ["COMPILED_PSP_PATH"]
         except KeyError:
             err_message = """ERROR: missing environment variable COMPILED_PSP_PATH.
-                Necessary for Dev phase.
+                Necessary for development phase.
                 Set COMPILED_PSP_PATH and relaunch the app, example :\n
                 export COMPILED_PSP_PATH=/some/path/to/PolSARpro"""
             self.store['logger'].critical(err_message)
@@ -80,11 +79,11 @@ class MainWindow(BasicWindow):
         self.log_level = self.store['config']['log_level']
 
         # # Dirty trick for easily
-        # # Easy changing log level during dev phase ###
+        # # changing log level during dev phase ###
         # # TODO: remove it
 
         self.log_level = logging.INFO
-        self.log_level = logging.DEBUG
+        # self.log_level = logging.DEBUG
 
         # # END # #
 
@@ -102,9 +101,9 @@ class MainWindow(BasicWindow):
         self.store['logger'] = logging.getLogger('main')
 
     def open_window_from_menu_entry(self):
-        # Uniq function to dynamically manage all Qactions
+        # Unique function to dynamically manage all Qactions
         try:
-            # The QAction name must be the ui file name.
+            # The QAction name MUST be the exact ui file name targeted
             window_name = self.ui.sender().objectName()
             ui = __import__(window_name)
             ui.Window(self.store, parent=self)
