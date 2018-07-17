@@ -10,9 +10,12 @@ from confirm_window import ConfirmWindow
 
 class StoreWindow(BasicWindow):
     """
-    A window that has a store and a local copy of the config part.
+    A window that access the global store and has a local
+    copy of the config part of the store.
     Manage closing events to ask confirmation when there are
-    unsaved changes.
+    unsaved changes in the local store.
+    The Global Store is NOT initialised here, it is passed as argument !
+    Global Store initialisation is responsability of main.py
     """
     def __init__(self, uiName, store, *args, **kwargs):
         super().__init__(uiName, store, *args, **kwargs)
@@ -35,7 +38,7 @@ class StoreWindow(BasicWindow):
             self.globalStore['config'].update(self.localconfig)
             # TODO: dont save to file every time,
             # only when closing PSP
-            conffile = self.localconfig['rootDir'] + '/config/default.conf.txt'
+            conffile = self.localconfig['conffile']
             with open(conffile, 'w') as f:
                 json.dump(self.localconfig, f, indent=4)
         except Exception as e:
