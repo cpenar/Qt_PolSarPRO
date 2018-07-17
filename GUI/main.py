@@ -79,7 +79,7 @@ class MainWindow(BasicWindow):
         self.log_level = self.store['config']['log_level']
 
         # # Dirty trick for easily
-        # # changing log level during dev phase ###
+        # # changing log level during dev phase
         # # TODO: remove it
 
         self.log_level = logging.INFO
