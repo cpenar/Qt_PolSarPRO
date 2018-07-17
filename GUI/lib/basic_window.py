@@ -23,7 +23,7 @@ class BasicWindow():
         self.ui = QtWidgets.QDialog()
         self.ui = uic.loadUi(uiName + '.ui', self.ui)
 
-        # TODO: suppress Escape key closing event for Dialog window
+        # Key press event management to intercept Esc key
         self.ui.savedKeyPressEvent = self.ui.keyPressEvent
         self.ui.keyPressEvent = self.cleanCloseWithEscapeKey
 
@@ -39,6 +39,7 @@ class BasicWindow():
             '    **kwargs=\n' + pformat(kwargs) + '\n\n')
 
     def cleanCloseWithEscapeKey(self, event):
+        # Intercept Esc key press for clean window close
         if event.key() != QtCore.Qt.Key_Escape:
             self.ui.savedKeyPressEvent(event)
         else:
