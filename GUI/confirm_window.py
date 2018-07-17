@@ -23,8 +23,8 @@ class ConfirmWindow(BasicWindow):
         self.parent.saveAndExit()
 
     def exitNoSave(self):
-        self.parent.forceClose()
         self.ui.close()
+        self.parent.forceClose()
 
     def cancel(self, event):
         self.ui.close()
