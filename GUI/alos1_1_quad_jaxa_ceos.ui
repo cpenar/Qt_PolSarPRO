@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>661</width>
-    <height>715</height>
+    <width>637</width>
+    <height>695</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -87,6 +87,12 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -94,7 +100,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background: white</string>
+      <string notr="true">background: white;border: 1px solid grey</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -217,6 +223,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_CheckFiles">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
          <horstretch>0</horstretch>
@@ -520,6 +529,12 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -527,7 +542,7 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background: white</string>
+      <string notr="true">background: white;border: 1px solid grey</string>
      </property>
      <property name="text">
       <string/>
@@ -567,6 +582,9 @@
        </item>
        <item>
         <widget class="QLabel" name="label_HH">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -586,7 +604,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: white</string>
+          <string notr="true">background: white;border: 1px solid grey</string>
          </property>
          <property name="text">
           <string/>
@@ -625,7 +643,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: white</string>
+          <string notr="true">background: white;border: 1px solid grey</string>
          </property>
          <property name="text">
           <string/>
@@ -664,7 +682,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: white</string>
+          <string notr="true">background: white;border: 1px solid grey</string>
          </property>
          <property name="text">
           <string/>
@@ -703,7 +721,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: white</string>
+          <string notr="true">background: white;border: 1px solid grey</string>
          </property>
          <property name="text">
           <string/>
