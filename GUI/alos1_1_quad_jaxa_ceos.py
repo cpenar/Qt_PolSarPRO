@@ -15,8 +15,10 @@ class Window(StoreWindow):
         self.allLabels = self.ui.findChildren(QtWidgets.QLabel)
 
         self.ui.pushButton_SaveAndExit.clicked.connect(self.saveAndExit)
-        self.ui.pushButton_OutputDir.clicked.connect(self.openFileDialogOutputDir)
-        self.ui.pushButton_SarLeaderFile.clicked.connect(self.openFileDialogSarLeaderFile)
+        self.ui.pushButton_OutputDir.clicked.connect(
+            self.openFileDialogOutputDir)
+        self.ui.pushButton_SarLeaderFile.clicked.connect(
+            self.openFileDialogSarLeaderFile)
         self.ui.pushButton_CheckFiles.clicked.connect(self.checkLeaderFile)
 
         if self.localconfig['inputDir']:
