@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- codding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from logging import warning
 

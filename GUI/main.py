@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- codding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import sys
 import os
@@ -82,8 +82,8 @@ class MainWindow(BasicWindow):
         # # changing log level during dev phase
         # # TODO: remove it
 
-        self.log_level = logging.INFO
-        # self.log_level = logging.DEBUG
+        #self.log_level = logging.INFO
+        self.log_level = logging.DEBUG
 
         # # END # #
 
