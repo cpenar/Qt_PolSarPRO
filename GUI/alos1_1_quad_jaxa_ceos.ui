@@ -80,24 +80,24 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="textEdit">
+    <widget class="QLabel" name="label_InputDir">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
        <height>25</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>7</pointsize>
-      </font>
+     <property name="styleSheet">
+      <string notr="true">background: white</string>
      </property>
-     <property name="html">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:7pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Input dir Content&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <property name="text">
+      <string>TextLabel</string>
      </property>
     </widget>
    </item>
@@ -128,7 +128,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButton_OutputDir">
      <property name="styleSheet">
       <string notr="true">Text-align:left</string>
      </property>
@@ -168,12 +168,12 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="pushButton_SarLeaderFile">
      <property name="styleSheet">
       <string notr="true">Text-align:left</string>
      </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>Choose a file ...</string>
      </property>
      <property name="icon">
       <iconset>
@@ -216,7 +216,7 @@ p, li { white-space: pre-wrap; }
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pushButton_CheckFiles">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
          <horstretch>0</horstretch>
@@ -513,9 +513,9 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="textEdit_4">
+    <widget class="QLabel" name="label_SarTrailerFile">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -525,6 +525,12 @@ p, li { white-space: pre-wrap; }
        <width>16777215</width>
        <height>25</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: white</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>
@@ -560,18 +566,30 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_11">
+        <widget class="QLabel" name="label_HH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: white</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
@@ -587,18 +605,30 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_10">
+        <widget class="QLabel" name="label_VH">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: white</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
@@ -607,25 +637,37 @@ p, li { white-space: pre-wrap; }
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QLabel" name="label_12">
+        <widget class="QLabel" name="label_18">
          <property name="text">
           <string>S21</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_8">
+        <widget class="QLabel" name="label_HV">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: white</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
@@ -641,18 +683,30 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <widget class="QTextEdit" name="textEdit_9">
+        <widget class="QLabel" name="label_VV">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: white</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
@@ -910,7 +964,7 @@ p, li { white-space: pre-wrap; }
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_7">
+      <widget class="QPushButton" name="pushButton_SaveAndExit">
        <property name="text">
         <string>OK</string>
        </property>
