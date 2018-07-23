@@ -241,6 +241,10 @@
        <property name="text">
         <string>Check FIles</string>
        </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Images/flaticon/svg/004-play-button-2.svg</normaloff>../Images/flaticon/svg/004-play-button-2.svg</iconset>
+       </property>
       </widget>
      </item>
      <item>
@@ -762,8 +766,15 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_5">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Read Header</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Images/flaticon/svg/004-play-button-2.svg</normaloff>../Images/flaticon/svg/004-play-button-2.svg</iconset>
        </property>
       </widget>
      </item>
@@ -782,6 +793,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_6">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Edit Header</string>
        </property>
