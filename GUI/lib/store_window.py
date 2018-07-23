@@ -45,7 +45,7 @@ class StoreWindow(BasicWindow):
                 json.dump(self.localconfig, f, indent=4)
         except Exception as e:
             self.logger.error('Error when saving configuration')
-            self.logger.debug(e)
+            self.logger.exception(e)
         self.ui.close()
 
     def forceClose(self):

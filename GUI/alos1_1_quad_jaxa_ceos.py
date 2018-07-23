@@ -40,7 +40,7 @@ class Window(StoreWindow):
                 self.ui.pushButton_OutputDir.setText(chosenDirPath)
         except Exception as e:
             self.logger.error('Error getting directory')
-            self.logger.debug(e)
+            self.logger.exception(e)
 
     def openFileDialogSarLeaderFile(self):
         try:
@@ -49,9 +49,10 @@ class Window(StoreWindow):
             if chosenFilePath:
                 self.localconfig['sarLeaderFile'] = chosenFilePath
                 self.ui.pushButton_SarLeaderFile.setText(chosenFilePath)
+                self.ui.pushButton_CheckFiles.setEnabled(True)
         except:
             self.logger.error('Error getting directory')
-            self.logger.debug(e)
+            self.logger.exception(e)
 
     def checkLeaderFile(self):
         path, leaderBaseName = os.path.split(self.localconfig['sarLeaderFile'])
