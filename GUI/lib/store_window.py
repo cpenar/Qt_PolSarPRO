@@ -3,6 +3,7 @@
 
 import copy
 import json
+from pprint import pformat
 
 from lib.basic_window import BasicWindow
 from confirm_window import ConfirmWindow
@@ -34,6 +35,7 @@ class StoreWindow(BasicWindow):
 
     def saveAndExit(self):
         self.logger.info('Saving configuration')
+        self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
         try:
             self.globalStore['config'].update(self.localconfig)
             # TODO: dont save to file every time,
