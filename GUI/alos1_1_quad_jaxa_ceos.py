@@ -72,8 +72,7 @@ class Window(StoreWindow):
             self.ui.label_SarTrailerFile.setText(trailerFileFullPath)
             self.localconfig['sarTrailerFile'] = trailerFileFullPath
         else:
-            self.logger.error('Cant find Sar Trailer File :')
-            self.logger.debug('trailerFileFullPath : ' + trailerFileFullPath)
+            self.logger.error('Cant find Sar Trailer File : ' + trailerFileFullPath)
             self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
             return False
 
@@ -85,8 +84,7 @@ class Window(StoreWindow):
                 self.getQLabelWithName('label_' + prefix).setText(imageFileFullPath)
                 self.localconfig['IMG-' + prefix] = imageFileFullPath
             else:
-                self.logger.error('Cant find IMG file')
-                self.logger.debug('imageFileFullPath : ' + imageFileFullPath)
+                self.logger.error('Cant find IMG file : ' + imageFileFullPath)
                 self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
                 return False
 
