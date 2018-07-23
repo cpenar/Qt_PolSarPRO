@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+from pprint import pformat
+
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5 import QtWidgets
 
@@ -64,29 +66,28 @@ class Window(StoreWindow):
 
         commonBaseName = leaderBaseName[4:]
 
-
         # Looking for the Sar Trailer File
         trailerFileFullPath = path + '/' + trailerPrefix + commonBaseName
-        try:
-            os.access(trailerFileFullPath, os.R_OK)
+        if os.access(trailerFileFullPath, os.R_OK):
             self.ui.label_SarTrailerFile.setText(trailerFileFullPath)
             self.localconfig['sarTrailerFile'] = trailerFileFullPath
-        except Exception as e:
-            self.logger.error('Cant find Sar Trailer File')
-            self.logger.debug(e)
+        else:
+            self.logger.error('Cant find Sar Trailer File :')
+            self.logger.debug('trailerFileFullPath : ' + trailerFileFullPath)
+            self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
             return False
 
         # Looking for the IMG files
         for prefix in prefix_image_files:
             full_prefix = 'IMG-' + prefix + '-'
             imageFileFullPath = path + '/' + full_prefix + commonBaseName
-            try:
-                os.access(imageFileFullPath, os.R_OK)
+            if os.access(imageFileFullPath, os.R_OK):
                 self.getQLabelWithName('label_' + prefix).setText(imageFileFullPath)
                 self.localconfig['IMG-' + prefix] = imageFileFullPath
-            except Exception as e:
-                self.logger.error('Cant find Image File ' + full_prefix + commonBaseName)
-                self.logger.exception(e)
+            else:
+                self.logger.error('Cant find IMG file')
+                self.logger.debug('imageFileFullPath : ' + imageFileFullPath)
+                self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
                 return False
 
     def getQLabelWithName(self, name):
