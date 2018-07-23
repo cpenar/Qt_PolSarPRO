@@ -765,12 +765,12 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="pushButton_ReadHeaders">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Read Header</string>
+        <string>Read Headers</string>
        </property>
        <property name="icon">
         <iconset>
@@ -908,18 +908,33 @@
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="textEdit_13">
+      <widget class="QLabel" name="label_InitialRows">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
          <height>25</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: white;border: 1px solid grey</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -953,12 +968,33 @@
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="textEdit_14">
+      <widget class="QLabel" name="label_InitialCols">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>25</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
          <height>25</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: white;border: 1px solid grey</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>

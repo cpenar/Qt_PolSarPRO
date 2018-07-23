@@ -29,11 +29,13 @@ class MainWindow(BasicWindow):
         self.log_file = self.rootDir + '/log/log.txt'
         conffile = abspath(self.rootDir + '/config/config.txt')
 
-        # loading default config
+        # Initialize Store
         try:
             with open(conffile, 'r') as fp:
                 self.store['config'] = json.load(fp)
         except Exception as e:
+            # TODO : This is wrong, cant use logger here !!
+            # still unset
             self.store['logger'].exception(e)
 
         # Setting logger
@@ -43,7 +45,7 @@ class MainWindow(BasicWindow):
 
         # env variable pointing to the root of a PolSARpro compiled version
         try:
-            os.environ["COMPILED_PSP_PATH"]
+            self.store['config']['compiled_psp_path'] = os.environ['COMPILED_PSP_PATH']
         except KeyError:
             err_message = """ERROR: missing environment variable COMPILED_PSP_PATH.
                 Necessary for development phase.
@@ -52,6 +54,10 @@ class MainWindow(BasicWindow):
             self.store['logger'].critical(err_message)
             print(err_message)
             sys.exit(1)
+
+        # Initializing config variable if they are not
+        if self.store['config']['tempDir'] == '':
+            self.store['config']['tempDir'] = self.store['rootDir'] + '/tmp'
 
         # Initializing main window
 
@@ -82,8 +88,8 @@ class MainWindow(BasicWindow):
         # # changing log level during dev phase
         # # TODO: remove it
 
-        #self.log_level = logging.INFO
-        self.log_level = logging.DEBUG
+        self.log_level = logging.INFO
+        #self.log_level = logging.DEBUG
 
         # # END # #
 
@@ -99,6 +105,8 @@ class MainWindow(BasicWindow):
             format=log_format)
 
         self.store['logger'] = logging.getLogger('main')
+        # Shortcut for logger
+        self.logger = self.store['logger']
 
     def open_window_from_menu_entry(self):
         # Unique function to dynamically manage all Qactions
