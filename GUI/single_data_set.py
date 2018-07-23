@@ -29,4 +29,4 @@ class Window(StoreWindow):
                 self.ui.pushButton_MainInputDir.setText(chosenDirPath)
         except Exception as e:
             self.logger.error('Error getting directory')
-            self.logger.exception(e)
+            self.logger.debug(e, exc_info=True)
