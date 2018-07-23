@@ -1033,8 +1033,18 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_SaveAndExit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>OK</string>
+        <string>Save and Exit</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Images/flaticon/svg/002-checked-1.svg</normaloff>../Images/flaticon/svg/002-checked-1.svg</iconset>
        </property>
       </widget>
      </item>
@@ -1072,9 +1082,13 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_9">
+      <widget class="QPushButton" name="pushButton_Cancel">
        <property name="text">
         <string>Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Images/flaticon/svg/002-cancel-3.svg</normaloff>../Images/flaticon/svg/002-cancel-3.svg</iconset>
        </property>
       </widget>
      </item>
