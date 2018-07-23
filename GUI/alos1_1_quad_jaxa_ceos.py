@@ -29,8 +29,6 @@ class Window(StoreWindow):
 
         self.ui.pushButton_OutputDir.setText(self.startDir)
 
-        self.localconfig['sarTrailerFile'] = ''
-
     def openFileDialogOutputDir(self):
         try:
             chosenDirPath = QFileDialog.getExistingDirectory(
