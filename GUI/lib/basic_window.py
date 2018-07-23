@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-
 from pprint import pformat
 
 from PyQt5 import uic, QtWidgets, QtCore
@@ -30,13 +29,16 @@ class BasicWindow():
         self.ui.show()
 
     def initLogging(self, args, kwargs):
+        debugmsg = ('with arguments :\n    uiName=' + self.uiName)
+
+        if args:
+            debugmsg += '\n\n    *args =\n' + pformat(args) + '\n'
+        if kwargs:
+            debugmsg += '\n\n    **kwargs = \n' + pformat(kwargs) + '\n'
+
         self.logger = logging.getLogger(self.uiName)
         self.logger.info('Opening window ' + self.uiName)
-        self.logger.debug(
-            'With arguments :\n' +
-            '    uiName=' + self.uiName + '\n\n' +
-            '    *args =\n' + pformat(args) + '\n\n' +
-            '    **kwargs=\n' + pformat(kwargs) + '\n\n')
+        self.logger.debug(debugmsg)
 
     def cleanCloseWithEscapeKey(self, event):
         # Intercept Esc key press for clean window close
