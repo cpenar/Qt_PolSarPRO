@@ -38,7 +38,7 @@ class BasicWindow():
 
         self.logger = logging.getLogger(self.uiName)
         self.logger.info('Opening window ' + self.uiName)
-        self.logger.debug(debugmsg)
+        self.logger.log(logging.STORE_INFO, debugmsg)
 
     def cleanCloseWithEscapeKey(self, event):
         # Intercept Esc key press for clean window close

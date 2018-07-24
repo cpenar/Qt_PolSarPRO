@@ -82,16 +82,20 @@ class MainWindow(BasicWindow):
             action.triggered.connect(self.open_window_from_menu_entry)
 
     def set_logger(self):
+        ### Dirty trick for DEV phase ###
+
+        # Adding a new logging level to help.
+        # And easily changing log level.
+        # ! TODO: remove it !
+
+        logging.STORE_INFO = 17
+        logging.addLevelName(logging.STORE_INFO, 'STORE_INFO')
         self.log_level = self.store['config']['log_level']
 
-        # # Dirty trick for easily
-        # # changing log level during dev phase
-        # # TODO: remove it
-
-        self.log_level = logging.INFO
+        self.log_level = logging.STORE_INFO
         #self.log_level = logging.DEBUG
 
-        # # END # #
+        ### END dirty trick ###
 
         if self.log_level <= logging.DEBUG:
             log_format = ('%(levelname)s:%(threadName)s:%(name)s:%(module)s:'

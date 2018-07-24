@@ -35,7 +35,10 @@ class StoreWindow(BasicWindow):
 
     def saveAndExit(self):
         self.logger.info('Saving configuration')
-        self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
+
+        # logging localconfig as an intermediate log level between
+        # INFO (20) and DEBUG (10)
+        self.logger.log(logging.STORE_INFO, 'with localconfig value :\n' + pformat(self.localconfig, indent=4))
         try:
             self.globalStore['config'].update(self.localconfig)
             # TODO: dont save to file every time,
