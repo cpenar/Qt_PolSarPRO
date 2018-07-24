@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>589</width>
-    <height>527</height>
+    <height>506</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,34 +77,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_InputDir">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background: white;border: 1px solid grey</string>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="Line" name="line">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -131,18 +103,50 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_OutputDir">
-     <property name="styleSheet">
-      <string notr="true">Text-align:left</string>
-     </property>
-     <property name="text">
-      <string>Output dir content</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../Images/flaticon/svg/011-folder-1.svg</normaloff>../Images/flaticon/svg/011-folder-1.svg</iconset>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QPushButton" name="pushButton_OutputDir">
+       <property name="styleSheet">
+        <string notr="true">Text-align:left</string>
+       </property>
+       <property name="text">
+        <string>Output dir content</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../Images/flaticon/svg/011-folder-1.svg</normaloff>../Images/flaticon/svg/011-folder-1.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_InputDir">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: white;border: 1px solid grey</string>
+       </property>
+       <property name="text">
+        <string>/T3</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -189,7 +193,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_6"/>
+      <widget class="QLineEdit" name="lineEdit_InitRow">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer">
@@ -221,7 +232,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_7"/>
+      <widget class="QLineEdit" name="lineEdit_EndRow">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_10">
@@ -253,7 +271,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_8"/>
+      <widget class="QLineEdit" name="lineEdit_InitCol">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_11">
@@ -285,7 +310,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_9"/>
+      <widget class="QLineEdit" name="lineEdit_EndCol">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_12">
