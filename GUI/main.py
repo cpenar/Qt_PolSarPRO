@@ -36,7 +36,7 @@ class MainWindow(BasicWindow):
         except Exception as e:
             # TODO : This is wrong, cant use logger here !!
             # still unset
-            self.store['logger'].exception(e)
+            self.store['logger'].debug(e, exc_info=True)
 
         # Setting logger
         self.set_logger()
@@ -117,7 +117,7 @@ class MainWindow(BasicWindow):
             ui.Window(self.store, parent=self)
         except Exception as e:
             if self.log_level <= logging.DEBUG:
-                self.store['logger'].exception(e)
+                self.store['logger'].debug(e, exc_info=True)
             else:
                 self.store['logger'].error(e)
 
