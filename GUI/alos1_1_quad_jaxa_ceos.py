@@ -118,7 +118,7 @@ class Window(StoreWindow):
 
         self.logger.debug('Executing :')
         self.logger.debug(exe_file)
-        self.logger.debug( exe_args)
+        self.logger.debug(exe_args)
         try:
             (_, return_code) = exec_psp_bin(exe_file, exe_args)
         except Exception as e:

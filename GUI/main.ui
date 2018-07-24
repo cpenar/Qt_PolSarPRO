@@ -161,16 +161,8 @@
       <addaction name="separator"/>
       <addaction name="image_viewer"/>
      </widget>
-     <widget class="QMenu" name="menu_test">
-      <property name="title">
-       <string>menu_test</string>
-      </property>
-      <addaction name="action_test"/>
-      <addaction name="actiontest2"/>
-     </widget>
      <addaction name="menu_Environment"/>
      <addaction name="menu_Import"/>
-     <addaction name="menu_test"/>
     </widget>
    </item>
   </layout>
