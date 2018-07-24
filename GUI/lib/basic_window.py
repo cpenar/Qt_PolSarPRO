@@ -8,7 +8,7 @@ from PyQt5 import uic, QtWidgets, QtCore
 
 
 class BasicWindow():
-    def __init__(self, uiName, *args, parent=None, **kwargs):
+    def __init__(self, uiName, *args, **kwargs):
         """
         Create a Qt window from a ui file which name is passed as argument.
         Also initialise logger.
