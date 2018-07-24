@@ -78,7 +78,6 @@ class Window(StoreWindow):
             self.localconfig['sarTrailerFile'] = trailerFileFullPath
         else:
             self.logger.error('Cant find Sar Trailer File : ' + trailerFileFullPath)
-            self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
             return False
 
         # Looking for the IMG files
@@ -90,7 +89,6 @@ class Window(StoreWindow):
                 self.localconfig['IMG-' + prefix] = imageFileFullPath
             else:
                 self.logger.error('Cant find IMG file : ' + imageFileFullPath)
-                self.logger.debug('with localconfig value :\n' + pformat(self.localconfig, indent=4))
                 return False
 
         # If everything went ok we can enabled the ReadHeaders button
